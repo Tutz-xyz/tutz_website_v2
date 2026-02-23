@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TUTZ - Browsing Tools</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="img/want.png">
+  <script type="importmap">
+  {
+    "imports": {}
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <nav class="nav">
+      <a href="index.html"><img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;"></a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link active" href="tools.html">Tools</a>
+        <a class="nav-link" href="articles.html">Articles</a>
+        <a class="nav-link" href="extras.html">Extras</a>
+        <!-- Disabled until we get a better implementation in place, but keeping the button here for easy re-enabling once ready
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/></svg>
+        </button> -->
+      </div>
+    </nav>
+
+    <main class="main">
+      <section id="market" class="page page--active" style="display:flex;flex:1">
+        <div class="market-left">
+          <div class="search-panel panel">
+            <div class="search-row">
+              <input id="search-input" placeholder="Search plugins or mods..." autocomplete="off" />
+              <button id="search-btn" class="btn" aria-label="Search"></button>
+            </div>
+            <div class="filters">
+              <label>Price
+                <select id="filter-price">
+                  <option value="">Any</option>
+                  <option value="free">Free</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </label>
+              <label>Minecraft
+                <select id="filter-mc">
+                  <option value="">Any</option>
+                  <option>1.20</option>
+                  <option>1.19</option>
+                  <option>1.18</option>
+                </select>
+              </label>
+              <label>Platform
+                <select id="filter-platform">
+                  <option value="">Any</option>
+                  <option>spigot</option>
+                  <option>bukkit</option>
+                  <option>fabric</option>
+                  <option>purpur</option>
+                  <option>paper</option>
+                </select>
+              </label>
+              <label>Provider
+                <input id="filter-provider" placeholder="Provider name" />
+              </label>
+              <label>Creator type
+                <select id="filter-official">
+                  <option value="">Any</option>
+                  <option value="official">Official</option>
+                  <option value="third">3rd Party</option>
+                </select>
+              </label>
+            </div>
+
+
+          </div>
+
+          <h2>Browse Plugins</h2>
+          <div id="plugins-controls" class="controls">
+            <div id="results-count" class="muted">Loading…</div>
+          </div>
+          <div id="plugins-list" class="grid"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </section>
+    </main>
+  <footer style="background-color: #04040652; color: #fff; padding: 48px 20px; text-align: center;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="text-align: center; width: 100%; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
+          <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
+          <span style="font-size: 24px; letter-spacing: 2px; color: #fff;">TUTZ.xyz</span>
+        </div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 14px;">© 2026 TUTZ.xyz All rights reserved.</div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
+      </div>
+
+      <div style="display: flex;flex-wrap: nowrap;gap: 60px;text-align: center;align-content: stretch;flex-direction: row;">
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Company</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">EULA</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
+            <li style="margin-bottom: 8px;"><a href="/legal/refund" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Refund Policy</a></li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Socials</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://www.youtube.com/@tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">YouTube</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://x.com/tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">X (Twitter)</a></li>
+          </ul>
+        </div>
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Contact/Support</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <!-- support@tutz.xyz -->
+            <li style="margin-bottom: 8px;"><a href="mailto:support@tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">support@tutz.xyz</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <!-- plugin detail modal -->
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-inner">
+        <button id="modal-close" class="modal-close" aria-label="Close">✕</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

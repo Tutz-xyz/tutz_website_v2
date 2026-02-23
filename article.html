@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TUTZ - Article</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="img/want.png">
+</head>
+<body>
+  <div id="app">
+    <nav class="nav">
+      <a href="index.html"><img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;"></a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="tools.html">Tools</a>
+        <a class="nav-link active" href="articles.html">Articles</a>
+        <a class="nav-link" href="extras.html">Extras</a>
+        <!-- Disabled until we get a better implementation in place, but keeping the button here for easy re-enabling once ready
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/></svg>
+        </button> -->
+      </div>
+    </nav>
+    <main class="main" style="padding:18px">
+      <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+        <div class="panel" id="blog-content">
+          <div class="muted">Loading blog…</div>
+        </div>
+        <div class="panel" style="text-align:center">
+          <a href="blogs.html" class="btn">Back to blogs</a>
+        </div>
+      </div>
+    </main>
+  <footer style="background-color: #04040652; color: #fff; padding: 48px 20px; text-align: center;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="text-align: center; width: 100%; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
+          <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
+          <span style="font-size: 24px; letter-spacing: 2px; color: #fff;">TUTZ.xyz</span>
+        </div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 14px;">© 2026 TUTZ.xyz All rights reserved.</div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
+      </div>
+
+      <div style="display: flex;flex-wrap: nowrap;gap: 60px;text-align: center;align-content: stretch;flex-direction: row;">
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Company</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">EULA</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
+            <li style="margin-bottom: 8px;"><a href="/legal/refund" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Refund Policy</a></li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Socials</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://www.youtube.com/@tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">YouTube</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://x.com/tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">X (Twitter)</a></li>
+          </ul>
+        </div>
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Contact/Support</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <!-- support@tutz.xyz -->
+            <li style="margin-bottom: 8px;"><a href="mailto:support@tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">support@tutz.xyz</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </div>
+  <script type="module">
+    function qs(s){ return document.querySelector(s); }
+    function escapeHtml(s=''){ return String(s).replace(/[&<>"']|'/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function getQueryParam(name){
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+    async function loadBlog(){
+      const id = getQueryParam('id');
+      if(!id){ qs('#blog-content').innerHTML = '<div class="muted">No blog specified.</div>'; return; }
+      try{
+        const res = await fetch(`api/blogs/${id}/manifest.json`);
+        if(!res.ok) throw new Error('not found');
+        const blog = await res.json();
+        const authorImg = blog.author_icon ? `<img class="avatar" src="${blog.author_icon}" alt="${escapeHtml(blog.author||'')}'s avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px;">` : '';
+        qs('#blog-content').innerHTML = `
+          <h1>${escapeHtml(blog.title)}</h1>
+          <div class="small-muted" style="margin-bottom:8px;display:flex;align-items:center;gap:8px;">${authorImg}<span>By ${escapeHtml(blog.author||'Unknown')}</span></div>
+          <div class="description" style="margin-bottom:16px">${escapeHtml(blog.description||'')}</div>
+          <div style="margin-top:18px">${blog.content ? blog.content : '<div class="muted">No content.</div>'}</div>
+        `;
+      }catch{
+        qs('#blog-content').innerHTML = '<div class="muted">Blog not found.</div>';
+      }
+    }
+
+    // Theme toggle logic (copied from app.js for consistency)
+    document.addEventListener('DOMContentLoaded', () => {
+      // Theme initialization: read persisted preference
+      const rootBody = document.body;
+      const saved = localStorage.getItem('ui:theme');
+      if(saved === 'light'){
+        rootBody.classList.add('light-mode');
+        document.querySelectorAll('#theme-toggle').forEach(b=>{ b.setAttribute('aria-pressed','true'); });
+      }
+      document.addEventListener('click', (e)=>{
+        const t = e.target.closest && e.target.closest('#theme-toggle');
+        if(!t) return;
+        const pressed = t.getAttribute('aria-pressed') === 'true';
+        if(pressed){
+          document.body.classList.remove('light-mode');
+          t.setAttribute('aria-pressed','false');
+          localStorage.removeItem('ui:theme');
+        }else{
+          document.body.classList.add('light-mode');
+          document.querySelectorAll('#theme-toggle').forEach(b=> b.setAttribute('aria-pressed','true'));
+          localStorage.setItem('ui:theme','light');
+        }
+      });
+      loadBlog();
+    });
+  </script>
+</body>
+</html>

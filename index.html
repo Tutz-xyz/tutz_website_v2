@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TUTZ.xyz</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="img/want.png">
+  <script type="importmap">
+  {
+    "imports": {}
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <nav class="nav">
+      <a href="index.html"><img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;"></a>
+      <div class="nav-links">
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link" href="tools.html">Tools</a>
+        <a class="nav-link" href="articles.html">Articles</a>
+        <a class="nav-link" href="extras.html">Extras</a>
+        <!-- Disabled until we get a better implementation in place, but keeping the button here for easy re-enabling once ready
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/></svg>
+        </button> -->
+      </div>
+    </nav>
+
+    <main class="main">
+      <section id="hero-splash" class="splash">
+        <div class="splash-inner">
+        <div class="splash-media" role="img" aria-label="Showcase image">
+          <img src="img/background.png" alt="" style="width:1500px;height:540px;object-fit:cover;object-position:center">
+          <div class="splash-overlay"></div>
+        </div>
+          <div class="splash-text">
+            <h1 class="slogan">Stupid things by stupid people who think they're tuff</h1>
+            <p class="slogan-sub">did I mention the stupid tools, servers & discord bots?</p>
+            <div class="splash-actions">
+              <a id="jump-to-search" class="btn btn--purple large" href="tools.html" aria-label="Browse tools"><img src="/img/tools.png" alt="Tools Logo" style="width: 38px; height: 38px; border-radius: 0px;">Tools</a>
+              <a id="jump-to-trickets" class="btn btn--trickets large" href="trickets.html" aria-label="Trickets"><img src="/img/trickets.png" alt="Trickets Logo" style="width: 46px; height: 38px; border-radius: 0px;">Trickets</a>
+              <a id="jump-to-undergrounded" class="btn btn--undergrounded large" href="undergrounded.html" aria-label="Undergrounded"><img src="/img/undergrounded_logo.png" alt="Undergrounded Logo" style="width: 46px; height: 38px; border-radius: 0px;">Undergrounded</a>
+              <!--<a id="splash-arrow" class="arrow-down" href="tools.html" aria-hidden="true" title="Browse plugins">⌄</a> -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-strip" aria-labelledby="home-features" style="width:100%;display:flex;justify-content:center;padding:18px">
+        <div style="max-width:1400px;width:100%;display:grid;grid-template-columns:1fr;gap:8px">
+          <div class="panel" style="padding:18px; border-radius: 18px 18px 0px 0px;">
+            <h2 id="home-features">Why</h2>
+            <div class="strong-points">
+              <div class="point"><strong>Patternized Tools</strong><div class="muted">Our tools follow consistent patterns for easy use and maintenance.</div></div>
+              <div class="point"><strong>Ethical Team</strong><div class="muted">We are committed to ethical development and transparency.</div></div>
+              <div class="point"><strong>No gatekeeping</strong><div class="muted">Access to information shouldn't be gatekept, if we like a product like a host we will make sure it's heard.</div></div>
+            </div>
+          </div>
+
+          <div class="panel faq" style="padding:18px; border-radius: 0px 0px 18px 18px;">
+            <h2 id="home-features">FAQ</h2>
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-q" aria-expanded="false">What is this?</button>
+                <div class="faq-a muted">A centralized webpage with tools for developing TUTZ.</div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q" aria-expanded="false">How do I host my plugin/mods?</button>
+                <div class="faq-a muted">As of now only official plugins & mods are supported.</div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q" aria-expanded="false">Can I trust the files?</button>
+                <div class="faq-a muted">We attempt to verify all plugins before they are published, but recommend checking the source and verifying checksums.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  <footer style="background-color: #04040652; color: #fff; padding: 48px 20px; text-align: center;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="text-align: center; width: 100%; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
+          <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
+          <span style="font-size: 24px; letter-spacing: 2px; color: #fff;">TUTZ.xyz</span>
+        </div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 14px;">© 2026 TUTZ.xyz All rights reserved.</div>
+        <div style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
+      </div>
+
+      <div style="display: flex;flex-wrap: nowrap;gap: 60px;text-align: center;align-content: stretch;flex-direction: row;">
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Company</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">EULA</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
+            <li style="margin-bottom: 8px;"><a href="/legal/refund" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Refund Policy</a></li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Socials</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://www.youtube.com/@tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">YouTube</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://x.com/tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">X (Twitter)</a></li>
+          </ul>
+        </div>
+        <div style="text-align: center; width: 100%;">
+          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Contact/Support</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
+            <!-- support@tutz.xyz -->
+            <li style="margin-bottom: 8px;"><a href="mailto:support@tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">support@tutz.xyz</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <!-- plugin detail modal -->
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-inner">
+        <button id="modal-close" class="modal-close" aria-label="Close">✕</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+  <script>
+    // ensure FAQ buttons have accessible toggle behavior on the landing page
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.faq-q').forEach(btn=>{
+        const ans = btn.nextElementSibling;
+        if(ans) ans.style.display = 'none';
+        btn.addEventListener('click', ()=>{
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          if(ans) ans.style.display = expanded ? 'none' : 'block';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
