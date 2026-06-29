@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Settings - TUTZ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="img/want.png">
+</head>
+<body class="light-mode">
+  <div id="app">
+    <nav class="nav"><button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+        <div class="navbar-left">
+          <a class="nav-brand" href="index.html"><img class="site-logo" src="/img/wtv8.png" alt="Logo"></a>
+        </div>
+          <div class="navbar-center">
+            <div class="search-bar nav-search" style="width: 100%; gap: 8px; padding: 8px;">
+                  <input id="nav-search" type="text" placeholder="Search..." aria-label="Search">
+                  <button id="nav-search-btn" aria-label="Search">
+                    <img width="18" height="18" src="/assets/search.svg" alt="Search" aria-hidden="true"></img>
+                  </button>
+            <div id="nav-search-dropdown" class="search-dropdown hidden">
+        <div class="search-dropdown-content">
+          <div class="search-tab-list">
+            <button type="button" class="search-tab-button active" data-search-type="all">All</button>
+            <button type="button" class="search-tab-button" data-search-type="articles">Articles</button>
+            <button type="button" class="search-tab-button" data-search-type="tools">Tools</button>
+            <button type="button" class="search-tab-button" data-search-type="users">Users</button>
+            <button type="button" class="search-tab-button" data-search-type="wiki">Wiki</button>
+          </div>
+          <div id="search-dropdown-results" class="search-dropdown-results">
+            <div class="muted" style="padding: 20px; text-align: center;">Type to search...</div>
+          </div>
+        </div>
+      </div></div>
+          </div>
+          <div class="navbar-right">
+            <div class="nav-links">
+              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="articles.html">Articles</a>
+              <a class="nav-link" href="extras.html">Events</a>
+            </div>
+
+            <div class="auth-buttons">
+              <a href="/auth/discord" class="nav-link" id="login-btn" title="Login with Discord" style="display: flex;">
+                <img width="18" height="18" src="/assets/discord.svg" alt="Discord" aria-hidden="true"></img>
+              </a>
+              <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
+                <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
+              </a>
+              <a href="/profile" class="nav-link active" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
+                <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
+              </a>
+            </div>
+            <div class="nav-extras-menu"><button type="button" class="nav-extras-toggle" aria-label="More options" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="5" r="1"></circle>
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="12" cy="19" r="1"></circle>
+        </svg>
+      </button>
+          </div>
+        </nav>
+
+    <main class="main">
+      <div class="page-container">
+        <div class="panel">
+          <h2 class="section-title"><span>Account Settings</span></h2>
+          
+          <div class="settings-section">
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Visible Profile</h3>
+                <p class="muted">When off, your profile is invisible to other users and search.</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="profile-public-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Show Discord Profile</h3>
+                <p class="muted">Allow your public profile to show Discord identity details.</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="discord-visible-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Email Contact</h3>
+                <p class="muted">Allow TUTZ to email you about account and community updates.</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="email-contact-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Discord DM Contact</h3>
+                <p class="muted">Allow TUTZ staff to contact you by Discord DM.</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="discord-dm-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Discord Connected</h3>
+                <p class="muted" id="discord-status-text">Not connected</p>
+              </div>
+              <span class="status-badge" id="discord-badge">Disconnected</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h3>Minecraft Account</h3>
+                <p class="muted" id="minecraft-status-text">Connect Discord first, then link Minecraft.</p>
+              </div>
+              <a href="extras.html#discord-connect" class="btn btn--purple btn--small" id="minecraft-link-btn">Link Minecraft</a>
+            </div>
+          </div>
+          
+          <div class="settings-actions">
+            <button class="btn btn--purple" id="save-settings-btn">Save Settings</button>
+            <a href="/profile" class="btn btn--outline">Back to Profile</a>
+          </div>
+          
+          <div id="settings-message" class="message" style="display: none;"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-container site-footer-shell">
+        <div class="site-footer-brand">
+          <div class="site-footer-mark">
+            <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
+            <span class="site-footer-name">TUTZ.xyz</span>
+          </div>
+          <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
+          <div class="footer-secondary-text">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
+        </div>
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3 class="footer-text">Company</h3>
+            <ul class="footer-link-list">
+              <li style="margin-bottom: 8px;"></li><a href="https://tos.tutz.xyz" class="footer-links">Terms of Service</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://privacy.tutz.xyz" class="footer-links">Privacy Policy</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://refund.tutz.xyz" class="footer-links">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="footer-text">Socials</h3>
+            <ul class="footer-link-list">
+              <li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+              <li><a href="https://www.youtube.com/@tutzxyz" class="footer-links">YouTube</a></li>
+              <li><a href="https://x.com/tutzxyz" class="footer-links">X (Twitter)</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="footer-text">Contact/Support</h3>
+            <ul class="footer-link-list">
+              <li><a href="mailto:support@tutz.xyz" class="footer-links">support@tutz.xyz</a></li>
+              <li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Load settings
+    async function loadSettings() {
+      try {
+        const authResponse = await fetch('/auth/user');
+        const authData = await authResponse.json();
+
+        if (!authData.authenticated) {
+          window.location.href = '/auth/discord';
+          return;
+        }
+
+        // Update Discord status
+        const discordStatusText = document.getElementById('discord-status-text');
+        const discordBadge = document.getElementById('discord-badge');
+        const minecraftStatusText = document.getElementById('minecraft-status-text');
+        const minecraftLinkBtn = document.getElementById('minecraft-link-btn');
+        if (authData.user && authData.user.id) {
+          discordStatusText.textContent = `Connected as ${authData.user.username}`;
+          discordBadge.textContent = 'Connected';
+          discordBadge.className = 'status-badge status-badge--success';
+        }
+
+        const minecraftName = authData.user?.minecraftUsername || authData.user?.minecraft?.username || authData.user?.minecraftName;
+        if (minecraftName) {
+          minecraftStatusText.textContent = `Linked as ${minecraftName}`;
+          minecraftLinkBtn.textContent = 'Linked';
+          minecraftLinkBtn.classList.remove('btn--purple');
+          minecraftLinkBtn.classList.add('btn--outline');
+          minecraftLinkBtn.removeAttribute('href');
+          minecraftLinkBtn.setAttribute('aria-disabled', 'true');
+        }
+
+        // Load current privacy and contact settings
+        const isPublic = authData.user && authData.user.isPublic !== false;
+        const showDiscordProfile = authData.user?.showDiscordProfile !== false;
+        const allowEmailContact = authData.user?.allowEmailContact === true;
+        const allowDiscordDMs = authData.user?.allowDiscordDMs === true;
+        document.getElementById('profile-public-toggle').checked = isPublic;
+        document.getElementById('discord-visible-toggle').checked = showDiscordProfile;
+        document.getElementById('email-contact-toggle').checked = allowEmailContact;
+        document.getElementById('discord-dm-toggle').checked = allowDiscordDMs;
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    }
+
+    // Save settings
+    async function saveSettings() {
+      const isPublic = document.getElementById('profile-public-toggle').checked;
+      const showDiscordProfile = document.getElementById('discord-visible-toggle').checked;
+      const allowEmailContact = document.getElementById('email-contact-toggle').checked;
+      const allowDiscordDMs = document.getElementById('discord-dm-toggle').checked;
+      const messageEl = document.getElementById('settings-message');
+      const saveBtn = document.getElementById('save-settings-btn');
+      
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+      
+      try {
+        const response = await fetch('/api/user/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            isPublic,
+            showDiscordProfile,
+            allowEmailContact,
+            allowDiscordDMs
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          messageEl.textContent = 'Settings saved successfully!';
+          messageEl.className = 'message message--success';
+        } else {
+          messageEl.textContent = result.error || 'Failed to save settings';
+          messageEl.className = 'message message--error';
+        }
+        messageEl.style.display = 'block';
+      } catch (error) {
+        console.error('Error saving settings:', error);
+        messageEl.textContent = 'Error saving settings';
+        messageEl.className = 'message message--error';
+        messageEl.style.display = 'block';
+      }
+      
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Settings';
+    }
+
+    document.getElementById('save-settings-btn').addEventListener('click', saveSettings);
+    loadSettings();
+  </script>
+</body>
+</html>

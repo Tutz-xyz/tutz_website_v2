@@ -7,7 +7,8 @@
       "author_icon": "assets/example_author-avatar.png",
       "description": "A step-by-step guide to building your own plugin marketplace, from backend to frontend.",
       "tags": ["guide", "marketplace", "plugins"],
-      "icon": "assets/example_plugin-icon.png"
+      "icon": "assets/example_plugin-icon.png",
+      "published": "2026-01-01"
     },
     {
       "id": "example_blog_2",
@@ -16,7 +17,8 @@
       "author_icon": "assets/example_author-avatar.png",
       "description": "Exploring trends and predictions for the Minecraft plugin ecosystem in 2026 and beyond.",
       "tags": ["minecraft", "future", "trends"],
-      "icon": "assets/example_plugin-icon.png"
+      "icon": "assets/example_plugin-icon.png",
+      "published": "2026-02-01"
     }
   ]
 }

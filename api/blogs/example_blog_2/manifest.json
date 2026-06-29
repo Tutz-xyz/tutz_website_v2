@@ -2,9 +2,11 @@
   "id": "example_blog_2",
   "title": "The Future of Minecraft Plugins",
   "author": "John Smith",
-  "description": "Exploring trends and predictions for the Minecraft plugin ecosystem in 2026 and beyond.",
-  "icon": "assets/example_plugin-icon.png",
-  "content": "<p>The Minecraft plugin ecosystem is evolving rapidly. In this article, we look at upcoming trends, new APIs, and what the future holds for plugin developers.</p><ul><li>More cross-platform support</li><li>Better security and sandboxing</li><li>Community-driven innovation</li></ul><p>Stay tuned for more insights!</p>"
-}
-
   "author_icon": "assets/example_author-avatar.png",
+  "description": "Exploring trends and predictions for the Minecraft plugin ecosystem in 2026 and beyond.",
+  "thumbnail": "assets/future-thumb.png",
+  "published": "2026-02-01",
+  "edited": "2026-02-05",
+  "icon": "assets/example_plugin-icon.png",
+  "content": "#The Minecraft plugin ecosystem is evolving rapidly. ##In this article, we look at upcoming trends, new APIs, and what the future holds for plugin developers.\n\n- More cross-platform support\n- Better security and sandboxing\n- Community-driven innovation\n\nStay tuned for more insights!"
+}

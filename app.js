@@ -1,6 +1,481 @@
 const qs = s => document.querySelector(s);
 const qsa = s => Array.from(document.querySelectorAll(s));
-const topbar = document.querySelector('.nav');
+const themeStorageKey = 'ui:theme';
+
+function getSystemTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getRequestedTheme() {
+  const saved = localStorage.getItem(themeStorageKey);
+  return saved === 'light' || saved === 'dark' ? saved : getSystemTheme();
+}
+
+function applyTheme(theme) {
+  const nextTheme = theme === 'dark' ? 'dark' : 'light';
+  document.body.classList.toggle('dark-mode', nextTheme === 'dark');
+  document.body.classList.toggle('light-mode', nextTheme === 'light');
+  document.documentElement.style.colorScheme = nextTheme;
+
+  qsa('[data-theme-toggle]').forEach(button => {
+    const isDark = nextTheme === 'dark';
+    button.setAttribute('aria-pressed', String(isDark));
+    button.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+    button.title = `Switch to ${isDark ? 'light' : 'dark'} mode`;
+    button.innerHTML = isDark
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"></circle><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="2" stroke-linecap="square"></path></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 15.31A8 8 0 118.69 4 6.5 6.5 0 0020 15.31z" fill="currentColor"></path></svg>';
+  });
+}
+
+function lockPageScroll(locked) {
+  document.documentElement.classList.toggle('modal-open', locked);
+  document.body.classList.toggle('modal-open', locked);
+}
+
+function initTheme() {
+  applyTheme(getRequestedTheme());
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (!localStorage.getItem(themeStorageKey)) {
+        applyTheme(event.matches ? 'dark' : 'light');
+      }
+    });
+  }
+}
+
+applyTheme(getRequestedTheme());
+document.addEventListener('DOMContentLoaded', initTheme);
+
+function initNavbarScrollState() {
+  const nav = qs('.nav');
+  if (!nav) return;
+
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const update = () => {
+    const currentY = window.scrollY;
+    const shouldHide = currentY > 140 && currentY > lastY && !document.body.classList.contains('mobile-nav-open') && !document.body.classList.contains('modal-open');
+
+    nav.classList.toggle('nav--scrolled', currentY > 8);
+    nav.classList.toggle('invisible', shouldHide);
+    lastY = currentY;
+    ticking = false;
+  };
+
+  update();
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+}
+
+function injectUIStyles() {
+  if (qs('#tutz-ui-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'tutz-ui-styles';
+  style.textContent = `
+#toast-container {
+  position: fixed;
+  top: 97px;
+  right: 12px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  max-width: 420px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)), rgba(12, 14, 20, 0.66);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(22px) saturate(150%);
+  color: #fff;
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity 240ms ease, transform 240ms ease;
+  pointer-events: auto;
+}
+.toast-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.toast-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  font-size: 16px;
+}
+.toast-body {
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+.toast-success { border: 1px solid rgba(60, 220, 150, 0.24); }
+.toast-info { border: 1px solid rgba(94, 153, 255, 0.22); }
+.toast-warning { border: 1px solid rgba(243, 185, 69, 0.22); }
+.toast-error { border: 1px solid rgba(237, 100, 100, 0.22); }
+.home-carousel {
+  padding: 24px 0;
+}
+.carousel-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+.carousel-description {
+  color: rgba(255,255,255,0.75);
+  max-width: 560px;
+}
+.image-carousel-shell {
+  display: grid;
+  gap: 16px;
+}
+.image-scroller {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.image-track {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  padding: 18px;
+  min-width: max-content;
+}
+.image-item {
+  flex: 0 0 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+  transition: transform 220ms ease;
+}
+.image-item:hover {
+  transform: translateY(-4px);
+}
+.image-item img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+}
+.image-caption {
+  padding: 14px 16px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.12);
+}
+.image-scroller-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.carousel-button {
+  border: none;
+  background: rgba(255,255,255,0.09);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.carousel-button:hover {
+  background: rgba(255,255,255,0.14);
+  transform: translateY(-1px);
+}
+@media (max-width: 860px) {
+  .image-item { flex: 0 0 220px; }
+  .image-caption { padding: 12px 14px; }
+}
+@media (max-width: 660px) {
+  .image-track { gap: 12px; padding: 12px; }
+  .image-item { flex: 0 0 180px; }
+  .carousel-header { flex-direction: column; align-items: stretch; }
+}
+`;
+  document.head.appendChild(style);
+}
+
+const navExtrasMenuConfig = [
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Documentation', href: '#' },
+      { label: 'API Reference', href: '#' },
+      { label: 'Video Tutorials', href: '#' },
+      { label: 'Code Examples', href: '#' }
+    ]
+  },
+  {
+    title: 'Communities',
+    links: [
+      { label: 'Discord Server', href: 'https://discord.tutz.xyz', target: '_blank' },
+    ]
+  },
+  {
+    title: 'Events & Account management',
+    links: [
+      { label: 'Discord Hub', href: 'extras.html#discord-connect' },
+      { label: 'Events Calendar', href: 'extras.html#events' },
+    ]
+  },
+  {
+    title: 'About TUTZ',
+    links: [
+      { label: 'What is TUTZ?', href: '#' },
+      { label: 'Blog Posts', href: 'articles.html' },
+      { label: 'FAQ', href: '#' }
+    ]
+  }
+];
+
+// Check auth state and update nav
+const toastStateKey = 'tutz-auth-state';
+
+function createToastContainer() {
+  if (qs('#toast-container')) return;
+  const container = document.createElement('div');
+  container.id = 'toast-container';
+  container.setAttribute('aria-live', 'polite');
+  container.setAttribute('aria-atomic', 'true');
+  document.body.appendChild(container);
+}
+
+function showToast(message, options = {}) {
+  const { type = 'success', duration = 5000 } = options;
+  createToastContainer();
+  const container = qs('#toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon" aria-hidden="true">${type === 'success' ? '✔' : type === 'warning' ? '⚠' : type === 'error' ? '✖' : 'ℹ'}</div>
+    <div class="toast-body"><strong>${message}</strong></div>
+  `;
+  container.appendChild(toast);
+
+  requestAnimationFrame(() => toast.classList.add('toast-visible'));
+  setTimeout(() => {
+    toast.classList.remove('toast-visible');
+    toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+  }, duration);
+}
+
+async function updateAuthUI() {
+  try {
+    const response = await fetch('/auth/user');
+    const data = await response.json();
+
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const profileBtn = document.getElementById('profile-btn');
+    const navProfileAvatar = document.getElementById('nav-profile-avatar');
+    const previousState = sessionStorage.getItem(toastStateKey);
+
+    if (data.authenticated) {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'flex';
+      if (profileBtn) profileBtn.style.display = 'flex';
+      if (navProfileAvatar && data.user) {
+        const avatarUrl = data.user.avatar
+          ? `https://cdn.discordapp.com/avatars/${data.user.id}/${data.user.avatar}.png?size=64`
+          : `https://cdn.discordapp.com/embed/avatars/${parseInt(data.user.id) % 5}.png?size=64`;
+        navProfileAvatar.src = avatarUrl;
+      }
+      if (previousState !== 'authenticated') {
+        showToast('Successfully logged in', { type: 'success' });
+        sessionStorage.setItem(toastStateKey, 'authenticated');
+      }
+    } else {
+      if (loginBtn) loginBtn.style.display = 'flex';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+      if (profileBtn) profileBtn.style.display = 'none';
+      if (previousState === 'authenticated') {
+        showToast('Logged out successfully', { type: 'info' });
+      }
+      sessionStorage.setItem(toastStateKey, 'signed-out');
+    }
+  } catch (error) {
+    console.error('Auth check failed:', error);
+  }
+}
+
+function normalizeNavPath(path) {
+  return String(path || '')
+    .replace(/^\/+|\/+$/g, '')
+    .replace(/\.html$/, '');
+}
+
+function markActiveNavLink() {
+  const currentPath = normalizeNavPath(window.location.pathname);
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    let linkPath;
+    try {
+      linkPath = normalizeNavPath(new URL(href, window.location.origin).pathname);
+    } catch {
+      linkPath = normalizeNavPath(href);
+    }
+
+    const isActive = currentPath === linkPath || (currentPath === '' && linkPath === 'index');
+    const profileActive = currentPath === 'settings' && linkPath === 'profile';
+    link.classList.toggle('active', isActive || profileActive);
+  });
+}
+
+function initImageScroller() {
+  const scroller = qs('#main-image-scroller');
+  if (!scroller) return;
+
+  const images = [
+    { src: '/img/tools.png', alt: 'Tools' },
+    { src: '/img/trickets.png', alt: 'Trickets' },
+    { src: '/img/undergrounded_logo.png', alt: 'Undergrounded' },
+    { src: '/img/wtv8.png', alt: 'TUTZ' }
+  ];
+
+  const track = document.createElement('div');
+  track.className = 'image-track';
+  const buildItems = () => images.map(image => `
+      <div class="image-item">
+        <img src="${image.src}" alt="${image.alt}" />
+        <div class="image-caption">${image.alt}</div>
+      </div>
+    `).join('');
+
+  track.innerHTML = buildItems() + buildItems() + buildItems();
+  scroller.innerHTML = '';
+  scroller.appendChild(track);
+  scroller.scrollLeft = 0;
+
+  let speed = 0.35;
+  let active = true;
+  let rafId = null;
+  const resetThreshold = track.scrollWidth / 3;
+
+  const step = () => {
+    if (active) {
+      scroller.scrollLeft += speed;
+      if (scroller.scrollLeft >= resetThreshold) {
+        scroller.scrollLeft -= resetThreshold;
+      }
+    }
+    rafId = requestAnimationFrame(step);
+  };
+  step();
+
+  scroller.addEventListener('mouseenter', () => active = false);
+  scroller.addEventListener('mouseleave', () => active = true);
+  scroller.addEventListener('scroll', () => {
+    if (scroller.scrollLeft >= resetThreshold) {
+      scroller.scrollLeft -= resetThreshold;
+    } else if (scroller.scrollLeft <= 0) {
+      scroller.scrollLeft += resetThreshold;
+    }
+  });
+
+  // Add click handlers for image inspection
+  scroller.addEventListener('click', (e) => {
+    const img = e.target.closest('img');
+    if (img) {
+      openImageModal(img.src, img.alt);
+    }
+  });
+}
+
+function initNavExtrasMenu() {
+  const wrapper = qs('.nav-extras-menu');
+  if (!wrapper) return;
+
+  wrapper.innerHTML = '';
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'nav-extras-toggle';
+  toggle.setAttribute('aria-label', 'More options');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="5" r="1"></circle>
+      <circle cx="12" cy="12" r="1"></circle>
+      <circle cx="12" cy="19" r="1"></circle>
+    </svg>
+  `;
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'nav-extras-dropdown';
+
+  navExtrasMenuConfig.forEach(section => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'expandable-section';
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'expandable-button';
+    button.setAttribute('aria-expanded', 'false');
+    button.innerHTML = `<span>${section.title}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+
+    const content = document.createElement('div');
+    content.className = 'expandable-content';
+
+    section.links.forEach(link => {
+      const anchor = document.createElement('a');
+      anchor.className = 'sidebar-link';
+      anchor.href = link.href;
+      anchor.textContent = link.label;
+      if (link.target) anchor.target = link.target;
+      content.appendChild(anchor);
+    });
+
+    button.addEventListener('click', () => {
+      const isOpen = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!isOpen));
+      content.style.maxHeight = isOpen ? '0' : `${content.scrollHeight}px`;
+    });
+
+    sectionEl.append(button, content);
+    dropdown.appendChild(sectionEl);
+  });
+
+  wrapper.append(toggle, dropdown);
+
+  toggle.addEventListener('click', () => {
+    const open = dropdown.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!wrapper.contains(event.target)) {
+      dropdown.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      wrapper.querySelectorAll('.expandable-button').forEach(button => button.setAttribute('aria-expanded', 'false'));
+    }
+  });
+}
 
 if(qs('#jump-to-search')){
   qs('#jump-to-search').addEventListener('click', (e)=>{
@@ -10,452 +485,280 @@ if(qs('#splash-arrow')){
   qs('#splash-arrow').addEventListener('click', (e)=>{ });
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  const rootBody = document.body;
-  const saved = localStorage.getItem('ui:theme');
-  rootBody.classList.add('light-mode');
-  if(saved === 'light'){
-    rootBody.classList.add('light-mode');
-    document.querySelectorAll('#theme-toggle').forEach(b=>{ b.setAttribute('aria-pressed','true'); });
+document.addEventListener('DOMContentLoaded', () => {
+  injectUIStyles();
+  initNavbarScrollState();
+  initNavExtrasMenu();
+  initMobileNav();
+  createToastContainer();
+  updateAuthUI();
+  markActiveNavLink();
+  initImageScroller();
+  const navSearch = qs('.nav-search');
+  const navSearchInput = qs('#nav-search');
+  let activeSearchType = 'all';
+
+  const searchDropdown = document.createElement('div');
+  searchDropdown.id = 'nav-search-dropdown';
+  searchDropdown.className = 'search-dropdown hidden';
+  searchDropdown.innerHTML = `
+    <div class="search-dropdown-content">
+      <div class="search-tab-list">
+        <button type="button" class="search-tab-button active" data-search-type="all">All</button>
+        <button type="button" class="search-tab-button" data-search-type="articles">Articles</button>
+        <button type="button" class="search-tab-button" data-search-type="tools">Tools</button>
+        <button type="button" class="search-tab-button" data-search-type="users">Users</button>
+        <button type="button" class="search-tab-button" data-search-type="wiki">Wiki</button>
+      </div>
+      <div id="search-dropdown-results" class="search-dropdown-results">
+        <div class="muted" style="padding: 20px; text-align: center;">Type to search...</div>
+      </div>
+    </div>
+  `;
+  if (navSearch) {
+    navSearch.style.position = 'relative';
+    navSearch.appendChild(searchDropdown);
   }
 
-  document.addEventListener('click', (e)=>{
-    const t = e.target.closest && e.target.closest('#theme-toggle');
-    if(!t) return;
-    const pressed = t.getAttribute('aria-pressed') === 'true';
-    if(pressed){
-      t.setAttribute('aria-pressed','false');
-      localStorage.removeItem('ui:theme');
-    }else{
-      document.body.classList.add('light-mode');
-      document.querySelectorAll('#theme-toggle').forEach(b=> b.setAttribute('aria-pressed','true'));
-      localStorage.setItem('ui:theme','light');
+  function openSearchDropdown() {
+    searchDropdown.classList.remove('hidden');
+    navSearchInput?.focus();
+  }
+
+  function closeSearchDropdown() {
+    searchDropdown.classList.add('hidden');
+  }
+
+  // Search function
+  async function performSearch(query, type) {
+    if (!query.trim()) {
+      qs('#search-dropdown-results').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Type to search...</div>';
+      return;
+    }
+
+    try {
+      let results = { articles: [], tools: [], users: [], wiki: [] };
+      const queryString = `/api/search?q=${encodeURIComponent(query)}${type !== 'wiki' ? `&type=${encodeURIComponent(type)}` : ''}`;
+      const response = await fetch(queryString);
+      const allResults = await response.json();
+
+      if (type === 'all' || type === 'articles') {
+        results.articles = allResults.articles || [];
+      }
+      if (type === 'all' || type === 'tools') {
+        results.tools = allResults.tools || [];
+      }
+      if (type === 'all' || type === 'users') {
+        results.users = allResults.users || [];
+      }
+
+      if (type === 'all' || type === 'wiki') {
+        // Fetch wiki data
+        const wikiResponse = await fetch('/api/wiki/enchantments.json');
+        const wikiData = await wikiResponse.json();
+        const wikiItems = wikiData.items || [];
+        const wikiResults = [];
+        for (const item of wikiItems) {
+          if (item.name.toLowerCase().includes(query.toLowerCase()) || item.short.toLowerCase().includes(query.toLowerCase())) {
+            wikiResults.push({ id: item.id, title: item.name, description: item.short });
+          }
+        }
+        results.wiki = wikiResults;
+      }
+
+      const safeText = (value) => value ? value : query;
+      let html = '<ul class="search-results-list">';
+
+      if (results.articles.length > 0) {
+        results.articles.forEach(article => {
+          html += `<li><a href="/article/${article.id}">${safeText(article.title)} in Articles</a></li>`;
+        });
+      }
+
+      if (results.tools.length > 0) {
+        results.tools.forEach(tool => {
+          html += `<li><a href="/tool/${tool.id}">${safeText(tool.name || tool.title)} in Tools</a></li>`;
+        });
+      }
+
+      if (results.users.length > 0) {
+        results.users.forEach(user => {
+          html += `<li><a href="/profile?id=${user.id}">${safeText(user.username || user.name)} in Users</a></li>`;
+        });
+      }
+
+      if (results.wiki.length > 0) {
+        results.wiki.forEach(item => {
+          html += `<li><a href="/wiki/enchantments.html#${item.id}">${safeText(item.title)} in Wiki</a></li>`;
+        });
+      }
+
+      html += '</ul>';
+
+      if (html === '<ul class="search-results-list"></ul>') {
+        html = '<div class="muted" style="padding: 20px; text-align: center;">No results found</div>';
+      }
+
+      qs('#search-dropdown-results').innerHTML = html;
+    } catch (error) {
+      console.error('Search error:', error);
+      qs('#search-dropdown-results').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Search error</div>';
+    }
+  }
+
+  // Event listeners
+  navSearchInput?.addEventListener('input', (e) => {
+    const query = e.target.value;
+    if (query.trim()) {
+      openSearchDropdown();
+      performSearch(query, activeSearchType);
+    } else {
+      closeSearchDropdown();
     }
   });
 
-  if(qs('#market')){
-    setTimeout(()=>{ if(typeof initMarketplace === 'function') initMarketplace(); }, 0);
+  function setSearchType(type) {
+    activeSearchType = type;
+    qsa('.search-tab-button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.searchType === type);
+    });
+    if (navSearchInput?.value.trim()) {
+      performSearch(navSearchInput.value, type);
+    }
   }
 
-  if(qs('#blogs')){
-    setTimeout(()=>{ if(typeof initBlogs === 'function') initBlogs(); }, 0);
-  }
-});
-
-qsa('.faq-q').forEach(q=>{
-  q.addEventListener('click', ()=>{
-    const item = q.parentElement;
-    item.classList.toggle('open');
-  });
-});
-
-const modal = qs('#modal');
-const modalBody = qs('#modal-body');
-const modalCloseBtn = qs('#modal-close');
-if(modal && modalBody){
-  if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-}
-function openModal(){ if(modal) modal.setAttribute('aria-hidden','false'); }
-function closeModal(){ if(modal) modal.setAttribute('aria-hidden','true'); if(modalBody) modalBody.innerHTML=''; }
-
-const API = {
-  plugins: 'api/plugins/index.json',
-  pluginBase: id => `api/plugins/${id}/manifest.json`,
-  versions: id => `api/plugins/${id}/versions.json`
-};
-
-let marketplaceInit = false;
-let allPlugins = [];
-let currentResults = [];
-let currentPage = 1;
-const PAGE_SIZE = 6;
-
-async function initMarketplace(){
-  if(marketplaceInit) return;
-  marketplaceInit = true;
-  const resultsCountEl = qs('#results-count');
-  if(resultsCountEl) resultsCountEl.textContent = 'Loading…';
-  await fetchPlugins();
-  populateCreators();
-  setupControls();
-  applyFilters();
-  // ensure results-count updates even if no plugins
-  if(resultsCountEl && currentResults.length === 0) resultsCountEl.textContent = '0 results';
-}
-
-async function fetchPlugins(){
-  try{
-    const res = await fetch(API.plugins);
-    const data = await res.json();
-    allPlugins = data.plugins || [];
-  }catch(e){
-    console.error('Failed to load plugins index', e);
-    allPlugins = [];
-  }
-}
-
-function populateCreators(){
-  const creators = Array.from(new Set(allPlugins.map(p=>p.provider || 'Unknown'))).slice(0,8);
-  const cont = qs('#creators-list');
-  if(!cont) return; // guard when creators list is not present on the page
-  cont.innerHTML = '';
-  creators.forEach(c=>{
-    const el = document.createElement('div');
-    el.className = 'creator';
-    el.innerHTML = `<div class="avatar" aria-hidden="true"></div><div><strong>${escapeHtml(c)}</strong><div class="muted small">Provider</div></div>`;
-    cont.appendChild(el);
-  });
-}
-
-function setupControls(){
-  // convert search button into a compact icon button (SVG)
-  const searchBtn = qs('#search-btn');
-  if(searchBtn){
-    searchBtn.classList.add('icon','btn','btn--purple');
-    searchBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="11" cy="11" r="6" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`;
-    searchBtn.addEventListener('click', applyFilters);
-  }
-  const searchInput = qs('#search-input');
-  if(searchInput) searchInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') applyFilters(); });
-  ['filter-price','filter-mc','filter-platform','filter-provider','filter-official'].forEach(id=>{
-    const el = qs(`#${id}`);
-    if(el) el.addEventListener('change', ()=>{ currentPage = 1; applyFilters(); });
-  });
-  qs('#filter-provider')?.addEventListener('input', ()=>{ currentPage = 1; applyFilters(); });
-
-  // FAQ toggles
-  qsa('.faq-q').forEach(q=>{
-    q.addEventListener('click', ()=>{
-      const a = q.nextElementSibling;
-      if(!a) return;
-      const open = a.style.display !== 'none';
-      a.style.display = open ? 'none' : 'block';
+  qsa('.search-tab-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.searchType;
+      setSearchType(type);
     });
   });
-}
 
-function applyFilters(){
-  const q = (qs('#search-input')?.value || '').trim().toLowerCase();
-  const price = qs('#filter-price')?.value || '';
-  const mc = qs('#filter-mc')?.value || '';
-  const platform = qs('#filter-platform')?.value || '';
-  const provider = (qs('#filter-provider')?.value || '').trim().toLowerCase();
-
-  currentResults = allPlugins.filter(p=>{
-    if(q && !(p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q))) return false;
-    if(price && String(p.price || '').toLowerCase() !== price) return false;
-    if(mc && !(p.minecraft_versions||[]).includes(mc)) return false;
-    if(platform && !(p.platforms||[]).includes(platform)) return false;
-    if(provider && !(String(p.provider||'').toLowerCase().includes(provider))) return false;
-    // official filter: expects plugin field `official`: true => official, false/absent => 3rd party
-    const off = qs('#filter-official')?.value || '';
-    if(off){
-      if(off === 'official' && !p.official) return false;
-      if(off === 'third' && p.official) return false;
+  qs('#nav-search-btn')?.addEventListener('click', () => {
+    const query = navSearchInput?.value;
+    if (query && query.trim()) {
+      openSearchDropdown();
+      performSearch(query, activeSearchType);
     }
-    return true;
   });
 
-  renderResults();
-}
-
-function renderResults(){
-  const container = qs('#plugins-list');
-  const count = qs('#results-count');
-  const total = currentResults.length;
-  count.textContent = `${total} result${total===1?'':'s'}`;
-
-  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  currentPage = Math.min(currentPage, pages);
-
-  const start = (currentPage-1)*PAGE_SIZE;
-  const visible = currentResults.slice(start, start + PAGE_SIZE);
-
-  container.innerHTML = '';
-  if(visible.length === 0){
-    container.innerHTML = '<div class="muted">No results</div>';
-    renderPagination(pages);
-    return;
-  }
-
-  visible.forEach(p=>{
-    const el = document.createElement('div');
-    el.className = 'plugin-card';
-    const icon = p.icon ? `<img class="icon" src="${p.icon}" alt="">` : `<div class="icon"></div>`;
-    // TODO: check if the tool is open source & remove the button if not, and make the open button actually open the plugin page
-    const authorImg = p.author_icon ? `<img class="avatar" src="${p.author_icon}" alt="${escapeHtml(p.author||p.provider||'')}'s avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">` : '';
-    el.innerHTML = `
-      ${icon}
-      <div class="card-content">
-        <div class="card-header">
-          <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
-            <h4>${escapeHtml(p.name)}</h4>
-            <div class="author-row" style="display:flex;align-items:baseline;gap:8px;">
-              ${authorImg}
-              <a class="author-link" href="#" onclick="event.preventDefault()" style="color: #9370DB;">${escapeHtml(p.provider || p.author || 'Unknown')}</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="tags-wrap" aria-hidden="false">
-          ${(p.tags||[]).slice(0,4).map(t=>`<div class="tag" style="font-size:12px;padding:4px 8px">${escapeHtml(t)}</div>`).join('')}
-        </div>
-
-        <div class="description">${escapeHtml(p.description || '')}</div>
-
-        <div class="card-actions">
-          <button class="btn btn--purple" onclick="openPluginModal('${escapeHtml(p.id)}')">Open</button>
-          <a class="btn" href="${p.url}" target="_blank" rel="noopener">Source</a>
-        </div>
-      </div>
-    `;
-    container.appendChild(el);
+  qs('#nav-search')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      const query = e.target.value;
+      if (query.trim()) {
+        openSearchDropdown();
+        performSearch(query, activeSearchType);
+      }
+    }
   });
 
-  renderPagination(pages);
+  // CTRL+K and CMD+K for search
+  document.addEventListener('keydown', (e)=>{
+    if((e.ctrlKey || e.metaKey) && e.key === 'k'){
+      e.preventDefault();
+      openSearchDropdown();
+    }
+    if(e.key === 'Escape' && !searchDropdown.classList.contains('hidden')){
+      closeSearchDropdown();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (navSearch && !navSearch.contains(e.target)) {
+      closeSearchDropdown();
+    }
+  });
+});
+
+function initMobileNav() {
+  const nav = qs('.nav');
+  const navLinks = qs('.nav-links');
+  if (!nav || !navLinks || qs('.mobile-nav-toggle')) return;
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'mobile-nav-toggle';
+  toggle.setAttribute('aria-label', 'Toggle navigation');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = '<span></span><span></span><span></span>';
+  nav.prepend(toggle);
+
+  const close = () => {
+    document.body.classList.remove('mobile-nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    lockPageScroll(false);
+  };
+
+  toggle.addEventListener('click', () => {
+    const open = !document.body.classList.contains('mobile-nav-open');
+    document.body.classList.toggle('mobile-nav-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    lockPageScroll(open);
+  });
+
+  nav.addEventListener('click', event => {
+    const link = event.target.closest && event.target.closest('.nav-link');
+    if (link) close();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && document.body.classList.contains('mobile-nav-open')) close();
+  });
 }
 
-function renderPagination(pages){
-  const cont = qs('#pagination');
-  cont.innerHTML = '';
-  for(let i=1;i<=pages;i++){
-    const btn = document.createElement('button');
-    btn.className = 'page-btn' + (i===currentPage?' active':'');
-    btn.textContent = i;
-    btn.addEventListener('click', ()=>{ currentPage = i; renderResults(); });
-    cont.appendChild(btn);
-  }
-}
+// Image inspection modal
+function openImageModal(src, alt) {
+  const modal = qs('#modal');
+  const modalBody = qs('#modal-body');
+  if (!modal || !modalBody) return;
 
-async function openPluginModal(id){
-  modalBody.innerHTML = `<div style="color:var(--muted)">Loading plugin…</div>`;
-  openModal();
-  try{
-    const [manifestRes, versionsRes] = await Promise.all([
-      fetch(API.pluginBase(id)),
-      fetch(API.versions(id))
-    ]);
-    if(!manifestRes.ok) throw new Error('manifest not found');
-    if(!versionsRes.ok) throw new Error('versions not found');
-    const manifest = await manifestRes.json();
-    const versions = await versionsRes.json();
-    renderPlugin(manifest, versions);
-  }catch(err){
-    modalBody.innerHTML = `<div style="color:#ffb4b4">Failed to load plugin</div>`;
-    console.error(err);
-  }
-}
-
-function renderPlugin(manifest, versions){
+  modal.classList.add('image-modal');
   modalBody.innerHTML = `
-    <h2>${escapeHtml(manifest.name)}</h2>
-    <div class="plugin-meta">${escapeHtml(manifest.description)}</div>
-    <div style="margin-top:12px">
-      <strong>Author:</strong> ${escapeHtml(manifest.author)}<br>
-      <strong>Id:</strong> ${escapeHtml(manifest.id)}
+    <div class="image-modal-viewer">
+      <div class="image-modal-tools" aria-label="Image zoom controls">
+        <button type="button" data-zoom="out" aria-label="Zoom out">-</button>
+        <button type="button" data-zoom="reset" aria-label="Reset zoom">100%</button>
+        <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      </div>
+      <div class="image-modal-stage">
+        <img src="${src}" alt="${alt}" />
+      </div>
     </div>
-    <div id="versions" style="margin-top:12px"></div>
   `;
-  const vCont = qs('#versions');
-  versions.versions.forEach(v=>{
-    const row = document.createElement('div');
-    row.className = 'version-item';
-    row.innerHTML = `
-      <div>
-        <div><strong>${escapeHtml(v.version)}</strong> <small class="plugin-meta">${escapeHtml(v.date || '')}</small></div>
-        <div class="plugin-meta">${escapeHtml(v.notes || '')}</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <a class="btn btn--purple" href="${v.download_url}" download>Download</a>
-        <button class="btn" data-url="${v.download_url}" onclick="copyToClipboard(this.dataset.url)">Copy Link</button>
-      </div>
-    `;
-    vCont.appendChild(row);
+
+  modal.setAttribute('aria-hidden', 'false');
+  modal.style.display = 'flex';
+  lockPageScroll(true);
+
+  const image = modalBody.querySelector('img');
+  let scale = 1;
+  const setScale = value => {
+    scale = Math.min(5, Math.max(0.5, value));
+    image.style.transform = `scale(${scale})`;
+  };
+
+  modalBody.querySelector('[data-zoom="in"]')?.addEventListener('click', () => setScale(scale + 0.25));
+  modalBody.querySelector('[data-zoom="out"]')?.addEventListener('click', () => setScale(scale - 0.25));
+  modalBody.querySelector('[data-zoom="reset"]')?.addEventListener('click', () => setScale(1));
+  modalBody.querySelector('.image-modal-stage')?.addEventListener('wheel', event => {
+    event.preventDefault();
+    setScale(scale + (event.deltaY < 0 ? 0.15 : -0.15));
+  }, { passive: false });
+
+  const closeModal = () => {
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    modal.classList.remove('image-modal');
+    lockPageScroll(false);
+  };
+
+  qs('#modal-close')?.addEventListener('click', closeModal, { once: true });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  }, { once: true });
 }
 
-// small helpers
-function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-window.copyToClipboard = async (txt) => {
-  try{
-    await navigator.clipboard.writeText(txt);
-    alert('Link copied to clipboard');
-  }catch(e){ alert('Could not copy'); }
-};
-
-if(qs('#hero-splash')) qs('#hero-splash').style.display = 'flex';
-if(qs('#market')) qs('#market').style.display = '';
-
-// auto-open marketplace if hash present
-if(location.hash === '#tools' && qs('#jump-to-search')){ qs('#jump-to-search').click(); }
-
-
-// --- BLOGS SECTION LOGIC ---
-const BLOG_API = {
-  blogs: 'api/blogs/index.json',
-  blogBase: id => `api/blogs/${id}/manifest.json`
-};
-let allBlogs = [];
-let blogResults = [];
-let blogPage = 1;
-const BLOG_PAGE_SIZE = 6;
-
-async function initBlogs(){
-  const countEl = qs('#blogs-results-count');
-  if(countEl) countEl.textContent = 'Loading…';
-  await fetchBlogs();
-  setupBlogControls();
-  applyBlogFilters();
-  if(countEl && blogResults.length === 0) countEl.textContent = '0 results';
-}
-
-async function fetchBlogs(){
-  try{
-    const res = await fetch(BLOG_API.blogs);
-    const data = await res.json();
-    allBlogs = data.blogs || [];
-  }catch(e){
-    console.error('Failed to load blogs index', e);
-    allBlogs = [];
-  }
-}
-
-function setupBlogControls(){
-  const searchBtn = qs('#blog-search-btn');
-  if(searchBtn){
-    searchBtn.classList.add('icon','btn','btn--purple');
-    searchBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="11" cy="11" r="6" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`;
-    searchBtn.addEventListener('click', applyBlogFilters);
-  }
-  const searchInput = qs('#blog-search-input');
-  if(searchInput) searchInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') applyBlogFilters(); });
-  const authorInput = qs('#filter-author');
-  if(authorInput) authorInput.addEventListener('input', ()=>{ blogPage = 1; applyBlogFilters(); });
-}
-// frankly no fucking clue what this is even doing
-function applyBlogFilters(){
-  const q = (qs('#blog-search-input')?.value || '').trim().toLowerCase();
-  const author = (qs('#filter-author')?.value || '').trim().toLowerCase();
-  blogResults = allBlogs.filter(b=>{
-    if(q && !(b.title.toLowerCase().includes(q) || (b.description||'').toLowerCase().includes(q))) return false;
-    if(author && !(String(b.author||'').toLowerCase().includes(author))) return false;
-    return true;
-  });
-  renderBlogResults();
-}
-
-function renderBlogResults(){
-  const container = qs('#blogs-list');
-  const count = qs('#blogs-results-count');
-  const total = blogResults.length;
-  if(count) count.textContent = `${total} result${total===1?'':'s'}`;
-  // pagination
-  const pages = Math.max(1, Math.ceil(total / BLOG_PAGE_SIZE));
-  blogPage = Math.min(blogPage, pages);
-  const start = (blogPage-1)*BLOG_PAGE_SIZE;
-  const visible = blogResults.slice(start, start + BLOG_PAGE_SIZE);
-  container.innerHTML = '';
-  if(visible.length === 0){
-    container.innerHTML = '<div class="muted">No results</div>';
-    renderBlogPagination(pages);
-    return;
-  }
-  visible.forEach(b=>{
-    const el = document.createElement('div');
-    el.className = 'plugin-card';
-    const icon = b.icon ? `<img class="icon" src="${b.icon}" alt="">` : `<div class="icon"></div>`;
-    el.innerHTML = `
-      ${icon}
-      <div class="card-content">
-        <div class="card-header">
-          <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
-            <h4>${escapeHtml(b.title)}</h4>
-            <div class="author-row"><a class="author-link" href="#" onclick="event.preventDefault()">${escapeHtml(b.author || 'Unknown')}</a></div>
-          </div>
-        </div>
-        <div class="tags-wrap" aria-hidden="false">
-          ${(b.tags||[]).slice(0,4).map(t=>`<div class="tag" style="font-size:12px;padding:4px 8px">${escapeHtml(t)}</div>`).join('')}
-        </div>
-        <div class="description">${escapeHtml(b.description || '')}</div>
-        <div class="card-actions">
-          <a class="btn btn--purple" href="article.html?id=${encodeURIComponent(b.id)}">Read</a>
-        </div>
-      </div>
-    `;
-    container.appendChild(el);
-  });
-  renderBlogPagination(pages);
-}
-
-function renderBlogPagination(pages){
-  const cont = qs('#blogs-pagination');
-  if(!cont) return;
-  cont.innerHTML = '';
-  for(let i=1;i<=pages;i++){
-    const btn = document.createElement('button');
-    btn.className = 'page-btn' + (i===blogPage?' active':'');
-    btn.textContent = i;
-    btn.addEventListener('click', ()=>{ blogPage = i; renderBlogResults(); });
-    cont.appendChild(btn);
-  }
-}
-
-let topbarTimer;
-let lastScrollY = window.scrollY;
-let mousePositionY = 0;
-let isMouseInsideTopbar = false;
-
-window.addEventListener('mousemove', (e) => {
-	mousePositionY = e.clientY;
-});
-
-window.addEventListener('mousemove', () => {
-	const topbarRect = topbar.getBoundingClientRect();
-	isMouseInsideTopbar = (
-		mousePositionY >= topbarRect.top &&
-		mousePositionY <= topbarRect.bottom
-	);
-	
-	if (isMouseInsideTopbar || mousePositionY < 50) {
-		topbar.classList.add('visible');
-		topbar.classList.remove('invisible');
-		clearTimeout(topbarTimer);
-	}
-});
-
-window.addEventListener('scroll', () => {
-	if (window.scrollY < 20) {
-		topbar.classList.add('visible');
-		topbar.classList.remove('invisible');
-		clearTimeout(topbarTimer);
-		return;
-	}
-	if (window.scrollY < lastScrollY) {
-		topbar.classList.add('visible');
-		topbar.classList.remove('invisible');
-		clearTimeout(topbarTimer);
-		return;
-	}
-	
-	if (window.scrollY > 20 && !isMouseInsideTopbar) {
-		topbarTimer = setTimeout(() => {
-			topbar.classList.add('invisible');
-			topbar.classList.remove('visible');
-		}, 3500);
-	}
-	
-	lastScrollY = window.scrollY;
-});
-
-document.querySelector('.nav').addEventListener('mouseleave', () => {
-	isMouseInsideTopbar = false;
-	
-	if (window.scrollY > 20 && !isMouseInsideTopbar) {
-		topbarTimer = setTimeout(() => {
-			topbar.classList.add('invisible');
-			topbar.classList.remove('visible');
-		}, 3500);
-	}
-});
+window.openImageModal = openImageModal;

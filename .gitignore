@@ -1,2 +1,15 @@
 assets
 downloads
+api
+node_modules
+package-lock.json
+package.json
+.env
+workers
+tool.html
+tools.html
+server.js
+scripts
+img
+fonts
+careers

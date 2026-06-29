@@ -3,14 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>INEPTE</title>
+  <title>Profile - TUTZ</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="img/want.png">
-  <script type="importmap">
-  {
-    "imports": {}
-  }
-  </script>
 </head>
 <body class="light-mode">
   <div id="app">
@@ -41,7 +36,7 @@
           </div>
           <div class="navbar-right">
             <div class="nav-links">
-              <a class="nav-link active" href="index.html">Home</a>
+              <a class="nav-link" href="index.html">Home</a>
               <a class="nav-link" href="articles.html">Articles</a>
               <a class="nav-link" href="extras.html">Events</a>
             </div>
@@ -53,7 +48,7 @@
               <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
                 <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
               </a>
-              <a href="/profile" class="nav-link" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
+              <a href="/profile" class="nav-link active" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
                 <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
               </a>
             </div>
@@ -68,94 +63,54 @@
         </nav>
 
     <main class="main">
-      <section id="hero-splash" class="splash">
-        <div class="splash-inner">
-          <div class="splash-media" aria-hidden="true">
-            <div class="splash-overlay"></div>
-            <span style="color: var(--text-main); font-size: 32px; z-index: 3; text-align: center;">image here</span>
-          </div>
-          <div class="hero-panel">
-            <div class="hero-panel-header">
-              <span>TUTZ Services</span>
-              <div class="hero-chip">SOON</div>
+      <div class="page-container">
+        <!-- Profile Header -->
+        <div class="panel">
+          <div class="profile-header">
+            <div class="profile-avatar-large">
+              <img id="profile-avatar" src="" alt="Profile Picture">
             </div>
-            <div class="hero-feature-grid">
-              <div class="hero-feature-card">
-                <img src="/img/trickets.png" alt="Trickets" />
-                <strong>Trickets</strong>
-                <p>A discord bot built for minecraft server communities, in an invite-only test.</p>
+            <div class="profile-info">
+              <h1 id="profile-username" class="profile-name"></h1>
+              <p id="profile-bio" class="profile-bio"></p>
+              <div class="profile-meta">
+                <span id="profile-joined"></span>
               </div>
-              <div class="hero-feature-card">
-                <img src="/img/red_sword.svg" alt="bea.monster" />
-                <strong>bea.monster</strong>
-                <p>A minecraft murder mystery server in development.</p>
-              </div>
-              </div>
+            </div>
+            <div class="profile-actions" id="profile-actions">
+              <a href="/settings" class="btn btn--outline" id="settings-btn">Settings</a>
             </div>
           </div>
         </div>
-      </section>
 
-      <section class="home-carousel" aria-labelledby="featured-images">
-        <div class="page-container">
-          <div class="carousel-header">
-            <h2 id="featured-images">Featured highlights</h2>
-            <p class="carousel-description">Check out our featured community moments & events.</p>
-          </div>
-          <div class="image-carousel-shell">
-            <div class="image-scroller" id="main-image-scroller" aria-label="Featured images scroller"></div>
+        <!-- Tools Section -->
+        <div class="panel">
+          <h2 class="section-title"><span>My Tools</span></h2>
+          <div id="profile-tools" class="results-grid">
+            <!-- Tools will be loaded here -->
           </div>
         </div>
-      </section>
 
-      <section class="home-strip" aria-labelledby="home-features">
-        <div class="page-container split-panels" style="margin-bottom: 28px;">
-          <div class="panel">
-            <h2 id="home-features" style="margin-bottom: 12px;">Important details</h2>
-            <div class="strong-points">
-              <div class="point"><strong>Feedback</strong><div class="muted">We value feedback and we'd really like to hear from you, join our discord or email us at contact@tutz.xyz to give feedback.</div></div>
-              <div class="point"><strong>Ethical Team</strong><div class="muted">We are committed to ethical development and transparency.</div></div>
-              <div class="point"><strong>AI Usage</strong><div class="muted">AI was used to make this website front-end, but nothing else. We believe it is a useful tool but humans are still better.</div></div>
-            </div>
-          </div>
-
-          <div class="panel faq faq-panel" style="margin-bottom: 28px;">
-            <h2 id="home-features" style="margin-bottom: 12px;">FAQ</h2>
-            <div class="faq-list">
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">What is TUTZ?</button>
-                <div class="faq-a muted">TUTZ is a group of minecraft servers.</div>
-              </div>
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">Why a website?</button>
-                <div class="faq-a muted">The website was built to provide information, changelogs & an enhanced calendar.</div>
-              </div>
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">How do I join the servers?</button>
-                <div class="faq-a muted">All servers are still in development, their IP will be released in this page & they will have their own section in the website.</div>
-              </div>
-              <div class="faq-item">
-                <button class="faq-q" aria-expanded="false">How do I add trickets to my server?</button>
-                <div class="faq-a muted">Trickets is currently private, but you can email us at contact@tutz.xyz for more information & potentially a tryout.</div>
-              </div>
-            </div>
+        <!-- Articles Section -->
+        <div class="panel">
+          <h2 class="section-title"><span>My Articles</span></h2>
+          <div id="profile-articles" class="results-grid">
+            <!-- Articles will be loaded here -->
           </div>
         </div>
-      </section>
-
+      </div>
     </main>
 
     <footer class="site-footer">
       <div class="page-container site-footer-shell">
         <div class="site-footer-brand">
           <div class="site-footer-mark">
-            <img class="site-logo" src="/img/wtv8.png" alt="Logo">
+            <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
             <span class="site-footer-name">TUTZ.xyz</span>
           </div>
           <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
           <div class="footer-secondary-text">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
         </div>
-
         <div class="footer-content">
           <div class="footer-column">
             <h3 class="footer-text">Company</h3>
@@ -165,7 +120,6 @@
               <li style="margin-bottom: 8px;"></li><a href="https://refund.tutz.xyz" class="footer-links">Refund Policy</a></li>
             </ul>
           </div>
-
           <div class="footer-column">
             <h3 class="footer-text">Socials</h3>
             <ul class="footer-link-list">
@@ -174,7 +128,6 @@
               <li><a href="https://x.com/tutzxyz" class="footer-links">X (Twitter)</a></li>
             </ul>
           </div>
-
           <div class="footer-column">
             <h3 class="footer-text">Contact/Support</h3>
             <ul class="footer-link-list">
@@ -185,21 +138,82 @@
         </div>
       </div>
     </footer>
+  </div>
 
   <script src="app.js"></script>
   <script>
-    // ensure FAQ buttons have accessible toggle behavior on the landing page
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.faq-q').forEach(btn=>{
-        const ans = btn.nextElementSibling;
-        if(ans) ans.style.display = 'none';
-        btn.addEventListener('click', ()=>{
-          const expanded = btn.getAttribute('aria-expanded') === 'true';
-          btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          if(ans) ans.style.display = expanded ? 'none' : 'block';
-        });
-      });
-    });
+    // Load profile data - shows current logged-in user
+    async function loadProfile() {
+      try {
+        // Check auth state first
+        const authResponse = await fetch('/auth/user');
+        const authData = await authResponse.json();
+
+        if (!authData.authenticated) {
+          // Not logged in, redirect to login
+          window.location.href = '/auth/discord';
+          return;
+        }
+
+        const user = authData.user;
+
+        // Build Discord avatar URL
+        let avatarUrl;
+        if (user.avatar) {
+          avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+        } else {
+          const defaultAvatarIndex = (parseInt(user.id) || 0) % 5;
+          avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png?size=256`;
+        }
+
+        document.getElementById('profile-avatar').src = avatarUrl;
+        document.getElementById('profile-username').textContent = user.global_name || user.username;
+        document.getElementById('profile-bio').textContent = user.bio || '';
+        document.getElementById('profile-joined').textContent = user.joined 
+          ? `Joined ${new Date(user.joined).toLocaleDateString()}` 
+          : '';
+
+        // Load tools
+        const toolsContainer = document.getElementById('profile-tools');
+        const userTools = user.tools || [];
+        if (userTools.length > 0) {
+          userTools.forEach(tool => {
+            const toolCard = document.createElement('div');
+            toolCard.className = 'result-card';
+            toolCard.innerHTML = `
+              <h3><a href="/tool/${tool.id}">${tool.name}</a></h3>
+              <p class="muted">${tool.description || ''}</p>
+            `;
+            toolsContainer.appendChild(toolCard);
+          });
+        } else {
+          toolsContainer.innerHTML = '<p class="muted">No tools yet.</p>';
+        }
+
+        // Load articles
+        const articlesContainer = document.getElementById('profile-articles');
+        const userArticles = user.articles || [];
+        if (userArticles.length > 0) {
+          userArticles.forEach(article => {
+            const articleCard = document.createElement('div');
+            articleCard.className = 'result-card';
+            articleCard.innerHTML = `
+              <h3><a href="/article/${article.id}">${article.title}</a></h3>
+              <p class="muted">${article.description || ''}</p>
+            `;
+            articlesContainer.appendChild(articleCard);
+          });
+        } else {
+          articlesContainer.innerHTML = '<p class="muted">No articles yet.</p>';
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        document.querySelector('.main').innerHTML = '<div class="page-container"><div class="panel"><p>Error loading profile.</p></div></div>';
+      }
+    }
+
+    loadProfile();
   </script>
 </body>
-</html>
+</html></content>
+<parameter name="filePath">c:\Users\Tut13\tutz_website_v2\profile.html

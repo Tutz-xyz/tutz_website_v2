@@ -6,100 +6,366 @@
   <title>TUTZ - Articles</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="img/want.png">
+  <script type="importmap">
+  {
+    "imports": {}
+  }
+  </script>
 </head>
-<body style="margin: 0; min-height: 80vh; display: flex; flex-direction: column; font-family: Arial, sans-serif;">
-  <div id="app" style="display: flex; flex-direction: column; flex: 1;">
-    <nav class="nav">
-      <a href="index.html"><img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;"></a>
-      <div class="nav-links">
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link" href="tools.html">Tools</a>
-        <a class="nav-link active" href="articles.html">Articles</a>
-        <a class="nav-link" href="extras.html">Extras</a>
-        <!-- Disabled until we get a better implementation in place, but keeping the button here for easy re-enabling once ready
-        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/></svg>
-        </button> -->
-      </div>
-    </nav>
+<body class="light-mode">
+  <div id="app">
+    <nav class="nav"><button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+        <div class="navbar-left">
+          <a class="nav-brand" href="index.html"><img class="site-logo" src="/img/wtv8.png" alt="Logo"></a>
+        </div>
+          <div class="navbar-center">
+            <div class="search-bar nav-search" style="width: 100%; gap: 8px; padding: 8px;">
+                  <input id="nav-search" type="text" placeholder="Search..." aria-label="Search">
+                  <button id="nav-search-btn" aria-label="Search">
+                    <img width="18" height="18" src="/assets/search.svg" alt="Search" aria-hidden="true"></img>
+                  </button>
+            <div id="nav-search-dropdown" class="search-dropdown hidden">
+        <div class="search-dropdown-content">
+          <div class="search-tab-list">
+            <button type="button" class="search-tab-button active" data-search-type="all">All</button>
+            <button type="button" class="search-tab-button" data-search-type="articles">Articles</button>
+            <button type="button" class="search-tab-button" data-search-type="tools">Tools</button>
+            <button type="button" class="search-tab-button" data-search-type="users">Users</button>
+            <button type="button" class="search-tab-button" data-search-type="wiki">Wiki</button>
+          </div>
+          <div id="search-dropdown-results" class="search-dropdown-results">
+            <div class="muted" style="padding: 20px; text-align: center;">Type to search...</div>
+          </div>
+        </div>
+      </div></div>
+          </div>
+          <div class="navbar-right">
+            <div class="nav-links">
+              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link active" href="articles.html">Articles</a>
+              <a class="nav-link" href="extras.html">Events</a>
+            </div>
 
-    <main class="main" style="flex: 1;">
-      <section id="blogs" class="page page--active" style="display:flex;flex:1">
-        <div class="market-left">
-          <div class="search-panel panel">
-            <div class="filters">
-              <div class="search-row">
-                <input id="blog-search-input" placeholder="Search blogs..." autocomplete="off" />
+            <div class="auth-buttons">
+              <a href="/auth/discord" class="nav-link" id="login-btn" title="Login with Discord" style="display: flex;">
+                <img width="18" height="18" src="/assets/discord.svg" alt="Discord" aria-hidden="true"></img>
+              </a>
+              <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
+                <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
+              </a>
+              <a href="/profile" class="nav-link" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
+                <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
+              </a>
+            </div>
+            <div class="nav-extras-menu"><button type="button" class="nav-extras-toggle" aria-label="More options" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="5" r="1"></circle>
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="12" cy="19" r="1"></circle>
+        </svg>
+      </button>
+        </nav>
+
+    <main class="main">
+      <section id="blogs" class="page page--active browse-page">
+        <div class="page-container">
+          <div class="panel control-panel">
+            <div class="search-toolbar">
+              <div class="search-bar" style="justify-self: stretch;">
+                <input id="blog-search-input" class="search-input" placeholder="Search articles, summaries, or authors..." autocomplete="off" />
+                <button id="blog-search-btn" class="search-button" aria-label="Search">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <polyline points="21 21 16.65 16.65"></polyline>
+                  </svg>
+                </button>
               </div>
-              <label>Author
-                <input id="filter-author" placeholder="Author name" />
+            </div>
+
+            <div class="field-grid">
+              <label class="field-group">
+                <span>Author</span>
+                <input id="filter-author" class="input-field" placeholder="Author name" />
               </label>
-              <label>⚠️BETA Tags
-                <input id="filter-tag" placeholder="Tag" list="default-tags" />
-                <datalist id="default-tags">
-                  <option value="guide">
-                  <option value="marketplace">
-                  <option value="plugins">
-                  <option value="minecraft">
-                  <option value="future">
-                  <option value="trends">
-                </datalist>
+              <label class="field-group">
+                <span>Sort</span>
+                <select id="filter-sort" class="select-field">
+                  <option value="title-asc">Title A-Z</option>
+                  <option value="title-desc">Title Z-A</option>
+                  <option value="date-newest">Newest first</option>
+                  <option value="date-oldest">Oldest first</option>
+                  <option value="author-asc">Author A-Z</option>
+                  <option value="author-desc">Author Z-A</option>
+                </select>
               </label>
-              <button id="blog-search-btn" class="btn" aria-label="Search"></button>
+            </div>
+            <button id="blog-advanced-filter-toggle" class="filter-button" type="button" aria-expanded="false">
+                <span>Advanced filters</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M4 6h16M10 12h4M6 18h12" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div id="blog-advanced-filters" class="filter-panel">
+              <label class="field-group">
+                <span>Tag matching</span>
+                <select id="filter-tag-mode" class="select-field">
+                  <option value="any">Match any selected tag</option>
+                  <option value="all">Require all selected tags</option>
+                </select>
+              </label>
+              <label class="field-group field-group--wide">
+                <span>Custom tags</span>
+                <input id="filter-custom-tags" class="input-field" placeholder="Enter tags (comma separated)" />
+              </label>
+              <div class="field-group field-group--wide">
+                <span>Popular tags</span>
+                <div id="article-tag-filters" class="tag-filter-list"></div>
+              </div>
             </div>
           </div>
 
-          <h2>Browse Blogs</h2>
-          <div id="blogs-controls" class="controls">
+          <div class="results-header">
+            <h2>Articles</h2>
             <div id="blogs-results-count" class="muted">Loading…</div>
           </div>
-          <div id="blogs-list" class="grid"></div>
+
+          <div id="blogs-list" class="results-grid results-grid--articles"></div>
           <div class="pagination" id="blogs-pagination"></div>
         </div>
       </section>
     </main>
-  </div>
 
-  <footer style="background-color: #04040652; color: #fff; padding: 48px 20px; text-align: center;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="text-align: center; width: 100%; margin-bottom: 24px;">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
-          <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
-          <span style="font-size: 24px; letter-spacing: 2px; color: #fff;">TUTZ.xyz</span>
+    <footer class="site-footer">
+      <div class="page-container site-footer-shell">
+        <div class="site-footer-brand">
+          <div class="site-footer-mark">
+            <img class="site-logo" src="/img/wtv8.png" alt="Logo">
+            <span class="site-footer-name">TUTZ.xyz</span>
+          </div>
+          <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
+          <div class="footer-secondary-text">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
         </div>
-        <div style="color: rgba(255, 255, 255, 0.5); font-size: 14px;">© 2026 TUTZ.xyz All rights reserved.</div>
-        <div style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
-      </div>
 
-      <div style="display: flex;flex-wrap: nowrap;gap: 60px;text-align: center;align-content: stretch;flex-direction: row;">
-        <div style="text-align: center; width: 100%;">
-          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Company</h3>
-          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
-            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">EULA</a></li>
-            <li style="margin-bottom: 8px;"><a href="https://eula.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
-            <li style="margin-bottom: 8px;"><a href="/legal/refund" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Refund Policy</a></li>
-          </ul>
-        </div>
-        
-        <div style="text-align: center; width: 100%;">
-          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Socials</h3>
-          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
-            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
-            <li style="margin-bottom: 8px;"><a href="https://www.youtube.com/@tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">YouTube</a></li>
-            <li style="margin-bottom: 8px;"><a href="https://x.com/tutzxyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">X (Twitter)</a></li>
-          </ul>
-        </div>
-        <div style="text-align: center; width: 100%;">
-          <h3 style="margin-bottom: 16px; font-size: 16px; color: #fff;">Contact/Support</h3>
-          <ul style="list-style: none; padding: 0; margin: 15px 0 0 0; text-align: center;">
-            <!-- support@tutz.xyz -->
-            <li style="margin-bottom: 8px;"><a href="mailto:support@tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">support@tutz.xyz</a></li>
-            <li style="margin-bottom: 8px;"><a href="https://discord.tutz.xyz" style="color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 14px;">Discord</a></li>
-          </ul>
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3 class="footer-text">Company</h3>
+            <ul class="footer-link-list">
+              <li style="margin-bottom: 8px;"></li><a href="https://tos.tutz.xyz" class="footer-links">Terms of Service</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://privacy.tutz.xyz" class="footer-links">Privacy Policy</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://refund.tutz.xyz" class="footer-links">Refund Policy</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3 class="footer-text">Socials</h3>
+            <ul class="footer-link-list">
+              <li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+              <li><a href="https://www.youtube.com/@tutzxyz" class="footer-links">YouTube</a></li>
+              <li><a href="https://x.com/tutzxyz" class="footer-links">X (Twitter)</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3 class="footer-text">Contact/Support</h3>
+            <ul class="footer-link-list">
+              <li><a href="mailto:support@tutz.xyz" class="footer-links">support@tutz.xyz</a></li>
+              <li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
-  <script type="module" src="app.js"></script>
+    </footer>
+  <script>
+    const blogState = {
+      blogs: [],
+      selectedTags: []
+    };
+
+    function escapeAttribute(value = '') {
+      return String(value).replace(/"/g, '&quot;');
+    }
+
+    function buildArticleTagFilters(blogs) {
+      const tagsContainer = document.getElementById('article-tag-filters');
+      if (!tagsContainer) return;
+
+      const allTags = Array.from(new Set((blogs || []).flatMap(blog => blog.tags || []).map(tag => tag.toLowerCase())))
+        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+      tagsContainer.innerHTML = '';
+      if (allTags.length === 0) {
+        tagsContainer.innerHTML = '<span class="muted">No tags available</span>';
+        return;
+      }
+
+      allTags.forEach(tag => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'filter-chip';
+        button.dataset.tag = tag;
+        button.textContent = tag;
+        button.addEventListener('click', () => toggleArticleTag(tag));
+        tagsContainer.appendChild(button);
+      });
+    }
+
+    function toggleArticleTag(tag) {
+      const index = blogState.selectedTags.indexOf(tag);
+      if (index >= 0) {
+        blogState.selectedTags.splice(index, 1);
+      } else {
+        blogState.selectedTags.push(tag);
+      }
+
+      document.querySelectorAll('#article-tag-filters .filter-chip').forEach(button => {
+        button.classList.toggle('active', blogState.selectedTags.includes(button.dataset.tag));
+      });
+
+      applyBlogFilters();
+    }
+
+    function parseCustomTags(value = '') {
+      return String(value)
+        .split(/[\s,]+/)
+        .map(tag => tag.toLowerCase().trim())
+        .filter(Boolean);
+    }
+
+    function getBlogDateValue(blog) {
+      const candidates = [blog.published, blog.edited, blog.updated];
+      for (const candidate of candidates) {
+        if (!candidate) continue;
+        const time = Date.parse(candidate);
+        if (!Number.isNaN(time)) return time;
+      }
+      return 0;
+    }
+
+    function sortBlogs(blogs, sortValue) {
+      const sorted = [...blogs];
+      switch (sortValue) {
+        case 'title-desc':
+          return sorted.sort((left, right) => right.title.localeCompare(left.title, undefined, { sensitivity: 'base' }));
+        case 'date-newest':
+          return sorted.sort((left, right) => getBlogDateValue(right) - getBlogDateValue(left));
+        case 'date-oldest':
+          return sorted.sort((left, right) => getBlogDateValue(left) - getBlogDateValue(right));
+        case 'author-asc':
+          return sorted.sort((left, right) => (left.author || '').localeCompare(right.author || '', undefined, { sensitivity: 'base' }));
+        case 'author-desc':
+          return sorted.sort((left, right) => (right.author || '').localeCompare(left.author || '', undefined, { sensitivity: 'base' }));
+        case 'title-asc':
+        default:
+          return sorted.sort((left, right) => left.title.localeCompare(right.title, undefined, { sensitivity: 'base' }));
+      }
+    }
+
+    function renderBlogs(blogs) {
+      const blogsList = document.getElementById('blogs-list');
+      const resultsCount = document.getElementById('blogs-results-count');
+
+      if (blogs.length === 0) {
+        blogsList.innerHTML = '<div class="panel empty-state"><div class="muted">No articles match the current filters.</div></div>';
+        resultsCount.textContent = '0 results';
+        return;
+      }
+
+      resultsCount.textContent = `${blogs.length} results`;
+      blogsList.innerHTML = blogs.map(blog => {
+        const blogTags = (blog.tags || []).map(tag => tag.toLowerCase());
+        return `
+          <article class="article-card"
+            data-author="${escapeAttribute((blog.author || '').toLowerCase())}"
+            data-tags="${escapeAttribute(blogTags.join(','))}">
+            <div class="article-card-thumb">
+              <img src="${blog.icon || 'assets/example_plugin-icon.png'}" alt="${escapeAttribute(blog.title)}" />
+            </div>
+            <div class="article-card-copy">
+              <h3><a href="article.html?id=${blog.id}">${blog.title}</a></h3>
+              <p class="article-card-desc">${blog.description || ''}</p>
+              <div class="article-card-meta">
+                <span>By ${blog.author || 'Unknown author'}</span>
+                <span class="tag-list">
+                  ${(blog.tags || []).map(tag => `<span class="article-tag">${tag}</span>`).join('')}
+                </span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function applyBlogFilters() {
+      const searchTerm = document.getElementById('blog-search-input').value.trim().toLowerCase();
+      const authorTerm = document.getElementById('filter-author').value.trim().toLowerCase();
+      const customTags = parseCustomTags(document.getElementById('filter-custom-tags').value);
+      const tagMode = document.getElementById('filter-tag-mode').value;
+      const sortValue = document.getElementById('filter-sort').value;
+
+      const filtered = blogState.blogs.filter(blog => {
+        const title = (blog.title || '').toLowerCase();
+        const description = (blog.description || '').toLowerCase();
+        const author = (blog.author || '').toLowerCase();
+        const tags = (blog.tags || []).map(tag => tag.toLowerCase());
+        const requestedTags = [...blogState.selectedTags, ...customTags];
+
+        const matchesSearch = !searchTerm || title.includes(searchTerm) || description.includes(searchTerm) || author.includes(searchTerm);
+        const matchesAuthor = !authorTerm || author.includes(authorTerm);
+        const matchesSelectedTags = requestedTags.length === 0 || (
+          tagMode === 'all'
+            ? requestedTags.every(tag => tags.includes(tag))
+            : requestedTags.some(tag => tags.includes(tag))
+        );
+
+        return matchesSearch && matchesAuthor && matchesSelectedTags;
+      });
+
+      renderBlogs(sortBlogs(filtered, sortValue));
+    }
+
+    async function loadBlogs() {
+      try {
+        const response = await fetch('/api/blogs');
+        const data = await response.json();
+        blogState.blogs = data.blogs || [];
+
+        buildArticleTagFilters(blogState.blogs);
+        applyBlogFilters();
+      } catch (error) {
+        console.error('Error loading blogs:', error);
+        document.getElementById('blogs-list').innerHTML = '<div class="panel error-state">Error loading blogs.</div>';
+        document.getElementById('blogs-results-count').textContent = 'Error';
+      }
+    }
+
+    function setupBlogSearch() {
+      const searchInput = document.getElementById('blog-search-input');
+      const authorFilter = document.getElementById('filter-author');
+      const customTagsFilter = document.getElementById('filter-custom-tags');
+      const sortFilter = document.getElementById('filter-sort');
+      const tagModeFilter = document.getElementById('filter-tag-mode');
+      const searchBtn = document.getElementById('blog-search-btn');
+      const advancedToggle = document.getElementById('blog-advanced-filter-toggle');
+      const advancedPanel = document.getElementById('blog-advanced-filters');
+
+      advancedToggle?.addEventListener('click', () => {
+        const isOpen = advancedPanel?.classList.toggle('open');
+        advancedToggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+      });
+
+      searchInput.addEventListener('input', applyBlogFilters);
+      authorFilter.addEventListener('input', applyBlogFilters);
+      customTagsFilter.addEventListener('input', applyBlogFilters);
+      sortFilter.addEventListener('change', applyBlogFilters);
+      tagModeFilter.addEventListener('change', applyBlogFilters);
+      searchBtn.addEventListener('click', applyBlogFilters);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBlogs();
+      setupBlogSearch();
+    });
+  </script>
+  <script src="app.js"></script>
 </body>
 </html>

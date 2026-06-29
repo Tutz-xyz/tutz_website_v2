@@ -2,9 +2,11 @@
   "id": "example_blog_1",
   "title": "How to Build a Plugin Marketplace",
   "author": "Jane Doe",
-  "description": "A step-by-step guide to building your own plugin marketplace, from backend to frontend.",
-  "icon": "assets/example_plugin-icon.png",
-  "content": "<p>Welcome to this comprehensive guide on building your own plugin marketplace! In this article, we'll cover everything from designing your API to creating a beautiful frontend experience.\n</p><h2>1. Plan Your Data Model</h2><p>Start by defining what a plugin is, what fields it needs, and how you'll store versions, authors, and tags.</p><h2>2. Build the Backend</h2><p>Use a simple JSON API or a full backend framework. Make sure to support search and filtering.</p><h2>3. Create the Frontend</h2><p>Use HTML, CSS, and JavaScript to build a responsive UI. Support dark and light themes for accessibility.</p><h2>4. Launch and Iterate</h2><p>Test your marketplace, gather feedback, and keep improving!</p>"
-}
-
   "author_icon": "assets/example_author-avatar.png",
+  "description": "A step-by-step guide to building your own plugin marketplace, from backend to frontend.",
+  "thumbnail": "assets/marketplace-thumb.png",
+  "published": "2026-01-01",
+  "edited": "2026-01-10",
+  "icon": "assets/example_plugin-icon.png",
+  "content": "Welcome to this comprehensive guide on building your own plugin marketplace! In this article, we'll cover everything from designing your API to creating a beautiful frontend experience.\n\n## 1. Plan Your Data Model\n\nStart by defining what a plugin is, what fields it needs, and how you'll store versions, authors, and tags.\n\n## 2. Build the Backend\n\nUse a simple JSON API or a full backend framework. Make sure to support search and filtering.\n\n## 3. Create the Frontend\n\nUse HTML, CSS, and JavaScript to build a responsive UI. Support dark and light themes for accessibility.\n\n## 4. Launch and Iterate\n\nTest your marketplace, gather feedback, and keep improving! Example Table: \n\n| Plugin Name | Author | Version |\n|-------------|--------|---------|\n| SuperPlugin | Jane Doe | 1.0.0 |\n\nHappy coding!"
+}

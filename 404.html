@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 - Page Not Found | TUTZ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="img/want.png">
+</head>
+<body class="light-mode">
+  <div id="app">
+    <nav class="nav"><button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+        <div class="navbar-left">
+          <a class="nav-brand" href="index.html"><img class="site-logo" src="/img/wtv8.png" alt="Logo"></a>
+        </div>
+          <div class="navbar-center">
+            <div class="search-bar nav-search" style="width: 100%; gap: 8px; padding: 8px;">
+                  <input id="nav-search" type="text" placeholder="Search..." aria-label="Search">
+                  <button id="nav-search-btn" aria-label="Search">
+                    <img width="18" height="18" src="/assets/search.svg" alt="Search" aria-hidden="true"></img>
+                  </button>
+            <div id="nav-search-dropdown" class="search-dropdown hidden">
+        <div class="search-dropdown-content">
+          <div class="search-tab-list">
+            <button type="button" class="search-tab-button active" data-search-type="all">All</button>
+            <button type="button" class="search-tab-button" data-search-type="articles">Articles</button>
+            <button type="button" class="search-tab-button" data-search-type="tools">Tools</button>
+            <button type="button" class="search-tab-button" data-search-type="users">Users</button>
+            <button type="button" class="search-tab-button" data-search-type="wiki">Wiki</button>
+          </div>
+          <div id="search-dropdown-results" class="search-dropdown-results">
+            <div class="muted" style="padding: 20px; text-align: center;">Type to search...</div>
+          </div>
+        </div>
+      </div></div>
+          </div>
+          <div class="navbar-right">
+            <div class="nav-links">
+              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="articles.html">Articles</a>
+              <a class="nav-link" href="extras.html">Events</a>
+            </div>
+
+            <div class="auth-buttons">
+              <a href="/auth/discord" class="nav-link" id="login-btn" title="Login with Discord" style="display: flex;">
+                <img width="18" height="18" src="/assets/discord.svg" alt="Discord" aria-hidden="true"></img>
+              </a>
+              <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
+                <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
+              </a>
+              <a href="/profile" class="nav-link" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
+                <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
+              </a>
+            </div>
+            <div class="nav-extras-menu"><button type="button" class="nav-extras-toggle" aria-label="More options" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="5" r="1"></circle>
+          <circle cx="12" cy="12" r="1"></circle>
+          <circle cx="12" cy="19" r="1"></circle>
+        </svg>
+      </button><div class="nav-extras-dropdown"><div class="expandable-section"><button type="button" class="expandable-button" aria-expanded="false"><span>Resources</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="expandable-content"><a class="sidebar-link" href="#">Documentation</a><a class="sidebar-link" href="#">API Reference</a><a class="sidebar-link" href="#">Video Tutorials</a><a class="sidebar-link" href="#">Code Examples</a></div></div><div class="expandable-section"><button type="button" class="expandable-button" aria-expanded="false"><span>Communities</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="expandable-content"><a class="sidebar-link" href="https://discord.tutz.xyz" target="_blank">Discord Server</a></div></div><div class="expandable-section"><button type="button" class="expandable-button" aria-expanded="false"><span>Events &amp; Account management</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="expandable-content"><a class="sidebar-link" href="extras.html#discord-connect">Discord Hub</a><a class="sidebar-link" href="extras.html#events">Events Calendar</a></div></div><div class="expandable-section"><button type="button" class="expandable-button" aria-expanded="false"><span>About TUTZ</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="expandable-content"><a class="sidebar-link" href="#">What is TUTZ?</a><a class="sidebar-link" href="articles.html">Blog Posts</a><a class="sidebar-link" href="#">FAQ</a></div></div></div></div>
+          </div>
+        </nav>
+
+    <main class="main" style="padding: 60px 20px; text-align: center;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="font-size: 4rem; margin: 0; color: var(--text-main);">404</h1>
+        <h2 style="font-size: 2rem; margin: 20px 0; color: var(--text-main);">Page Not Found</h2>
+        <p style="font-size: 1.2rem; color: var(--muted-text); margin: 20px 0;">Sorry, the page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.</p>
+        <div style="margin-top: 40px;">
+          <a href="index.html" class="btn btn--purple" style="margin-right: 10px;">Go Home</a>
+          <a href="articles.html" class="btn">Browse Articles</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div style="margin: 0 auto;">
+        <div style="text-align: center; width: 100%; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
+            <img src="/img/wtv8.png" alt="Logo" style="width: 48px; height: 48px;">
+            <span style="font-size: 24px; letter-spacing: 2px; color: #fff;">TUTZ.xyz</span>
+          </div>
+          <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
+          <div class="footer-secondary-text">We are not, in any way, affiliated with, endorsed by, or endorsing Mojang or Microsoft Studios.</div>
+        </div>
+
+        <div class="footer-content">
+          <div style="text-align: center; width: 100%;">
+            <h3 class="footer-text">Company</h3>
+            <ul class="footer-link-list">
+              <li style="margin-bottom: 8px;"></li><a href="https://eula.tutz.xyz" class="footer-links">EULA</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://eula.tutz.xyz" class="footer-links">Privacy Policy</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="/legal/refund" class="footer-links">Refund Policy</a></li>
+            </ul>
+          </div>
+
+          <div style="text-align: center; width: 100%;">
+            <h3 class="footer-text">Socials</h3>
+            <ul class="footer-link-list">
+              <li style="margin-bottom: 8px;"></li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://www.youtube.com/@tutzxyz" class="footer-links">YouTube</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://x.com/tutzxyz" class="footer-links">X (Twitter)</a></li>
+            </ul>
+          </div>
+          <div style="text-align: center; width: 100%;">
+            <h3 class="footer-text">Contact/Support</h3>
+            <ul class="footer-link-list">
+              <li style="margin-bottom: 8px;"></li><a href="mailto:support@tutz.xyz" class="footer-links">support@tutz.xyz</a></li>
+              <li style="margin-bottom: 8px;"></li><a href="https://discord.tutz.xyz" class="footer-links">Discord</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
