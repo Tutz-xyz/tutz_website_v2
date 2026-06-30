@@ -6,6 +6,17 @@
   <title>TUTZ - Extras</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="https://placehold.co/32x32">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tutz.xyz/">
+  <meta property="og:title" content="TUTZ - Extras">
+  <meta property="og:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="og:image" content="https://placehold.co/1200x630">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tutz.xyz/">
+  <meta property="twitter:title" content="TUTZ - Extras">
+  <meta property="twitter:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="twitter:image" content="https://placehold.co/1200x630">
 </head>
 <body class="light-mode no-hscroll">
   <div id="app">
@@ -210,8 +221,25 @@
     // Load and display events
     async function loadEvents() {
       try {
-        const response = await fetch('/api/events');
-        const events = await response.json();
+        let events = [];
+        try {
+          const response = await fetch('/api/events');
+          if (response.ok) {
+            events = await response.json();
+          }
+        } catch (e) {
+          console.warn('API fetch failed, using pseudo events.');
+        }
+
+        if (events.length === 0) {
+           const now = Date.now();
+           events.push(
+             { id: 'ev-1', title: 'Minecraft Server Launch', description: 'Join us for the grand opening!', timestamp: new Date(now + 86400000).toISOString(), thumbnail: 'https://placehold.co/400x400' },
+             { id: 'ev-2', title: 'Community Q&A', description: 'Ask us anything on Discord.', timestamp: new Date(now + 86400000 * 2).toISOString(), thumbnail: 'https://placehold.co/400x400' },
+             { id: 'ev-3', title: 'Beta Testing Phase 2', description: 'Testing new features.', timestamp: new Date(now + 86400000 * 5).toISOString(), thumbnail: 'https://placehold.co/400x400', requiresApplication: true },
+             { id: 'ev-4', title: 'Past Event Example', description: 'This event already happened.', timestamp: new Date(now - 86400000 * 3).toISOString(), thumbnail: 'https://placehold.co/400x400' }
+           );
+        }
         const eventsList = document.getElementById('events-list');
         const timezoneSelect = document.getElementById('timezone-select');
         const expiredCheckbox = document.getElementById('filter-expired');

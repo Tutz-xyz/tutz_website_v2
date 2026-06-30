@@ -11,6 +11,17 @@
     "imports": {}
   }
   </script>
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tutz.xyz/">
+  <meta property="og:title" content="TUTZ - Articles">
+  <meta property="og:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="og:image" content="https://placehold.co/1200x630">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tutz.xyz/">
+  <meta property="twitter:title" content="TUTZ - Articles">
+  <meta property="twitter:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="twitter:image" content="https://placehold.co/1200x630">
 </head>
 <body class="light-mode">
   <div id="app">
@@ -328,14 +339,22 @@
         const response = await fetch('/api/blogs');
         const data = await response.json();
         blogState.blogs = data.blogs || [];
-
-        buildArticleTagFilters(blogState.blogs);
-        applyBlogFilters();
       } catch (error) {
         console.error('Error loading blogs:', error);
-        document.getElementById('blogs-list').innerHTML = '<div class="panel error-state">Error loading blogs.</div>';
-        document.getElementById('blogs-results-count').textContent = 'Error';
+        blogState.blogs = [];
       }
+
+      if (blogState.blogs.length === 0) {
+        blogState.blogs.push(
+          { id: 'pseudo-1', title: 'The Future of TUTZ', description: 'What we have planned for the future.', author: 'Admin', tags: ['News', 'Future'], published: new Date().toISOString(), icon: 'https://placehold.co/48x48' },
+          { id: 'pseudo-2', title: 'Trickets Development Update', description: 'Latest patch notes for our discord bot.', author: 'Tutz', tags: ['Update', 'Trickets'], published: new Date().toISOString(), icon: 'https://placehold.co/48x48' },
+          { id: 'pseudo-3', title: 'bea.monster Beta Testing', description: 'Join us for the upcoming beta.', author: 'Admin', tags: ['Minecraft', 'Beta'], published: new Date().toISOString(), icon: 'https://placehold.co/48x48' },
+          { id: 'pseudo-4', title: 'Community Guidelines', description: 'A refresher on our rules.', author: 'Moderator', tags: ['Rules', 'Community'], published: new Date().toISOString(), icon: 'https://placehold.co/48x48' }
+        );
+      }
+
+      buildArticleTagFilters(blogState.blogs);
+      applyBlogFilters();
     }
 
     function setupBlogSearch() {
