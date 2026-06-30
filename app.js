@@ -353,10 +353,10 @@ function initImageScroller() {
   if (!scroller) return;
 
   const images = [
-    { src: '/img/tools.png', alt: 'Tools' },
-    { src: '/img/trickets.png', alt: 'Trickets' },
-    { src: '/img/undergrounded_logo.png', alt: 'Undergrounded' },
-    { src: '/img/wtv8.png', alt: 'TUTZ' }
+    { src: 'https://placehold.co/400x400', alt: 'Tools' },
+    { src: 'https://placehold.co/400x400', alt: 'Trickets' },
+    { src: 'https://placehold.co/400x400', alt: 'Undergrounded' },
+    { src: 'https://placehold.co/48x48', alt: 'TUTZ' }
   ];
 
   const track = document.createElement('div');
@@ -673,15 +673,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMobileNav() {
   const nav = qs('.nav');
   const navLinks = qs('.nav-links');
-  if (!nav || !navLinks || qs('.mobile-nav-toggle')) return;
+  if (!nav || !navLinks) return;
 
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'mobile-nav-toggle';
-  toggle.setAttribute('aria-label', 'Toggle navigation');
-  toggle.setAttribute('aria-expanded', 'false');
-  toggle.innerHTML = '<span></span><span></span><span></span>';
-  nav.prepend(toggle);
+  let toggle = qs('.mobile-nav-toggle');
+  if (!toggle) {
+    toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'mobile-nav-toggle';
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span></span><span></span><span></span>';
+    nav.prepend(toggle);
+  }
 
   const close = () => {
     document.body.classList.remove('mobile-nav-open');

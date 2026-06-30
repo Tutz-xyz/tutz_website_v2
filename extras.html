@@ -5,19 +5,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TUTZ - Extras</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/x-icon" href="img/want.png">
+  <link rel="icon" type="image/x-icon" href="https://placehold.co/32x32">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tutz.xyz/">
+  <meta property="og:title" content="TUTZ - Extras">
+  <meta property="og:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="og:image" content="https://placehold.co/1200x630">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tutz.xyz/">
+  <meta property="twitter:title" content="TUTZ - Extras">
+  <meta property="twitter:description" content="TUTZ Services and Minecraft Communities.">
+  <meta property="twitter:image" content="https://placehold.co/1200x630">
+  <meta name="theme-color" content="#7a4bff">
 </head>
 <body class="light-mode no-hscroll">
   <div id="app">
     <nav class="nav"><button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
         <div class="navbar-left">
-          <a class="nav-brand" href="index.html"><img class="site-logo" src="/img/wtv8.png" alt="Logo"></a>
+          <a class="nav-brand" href="index.html"><img class="site-logo" src="https://placehold.co/48x48" alt="Logo"></a>
         </div>
           <div class="navbar-center">
             <div class="search-bar nav-search" style="width: 100%; gap: 8px; padding: 8px;">
                   <input id="nav-search" type="text" placeholder="Search..." aria-label="Search">
                   <button id="nav-search-btn" aria-label="Search">
-                    <img width="18" height="18" src="/assets/search.svg" alt="Search" aria-hidden="true"></img>
+                    <img width="18" height="18" src="https://placehold.co/18x18" alt="Search" aria-hidden="true"></img>
                   </button>
             <div id="nav-search-dropdown" class="search-dropdown hidden">
         <div class="search-dropdown-content">
@@ -43,14 +55,14 @@
 
             <div class="auth-buttons">
               <a href="/auth/discord" class="nav-link" id="login-btn" title="Login with Discord" style="display: flex;">
-                <img width="18" height="18" src="/assets/discord.svg" alt="Discord" aria-hidden="true"></img>
-              </a>
+                <img width="18" height="18" src="https://placehold.co/18x18" alt="Discord" aria-hidden="true"></img>
+              <span class="auth-text">Login</span></a>
               <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
-                <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
-              </a>
+                <img width="18" height="18" src="https://placehold.co/18x18" alt="Logout" aria-hidden="true"></img>
+              <span class="auth-text">Logout</span></a>
               <a href="/profile" class="nav-link" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
                 <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
-              </a>
+              <span class="auth-text">Profile</span></a>
             </div>
             <div class="nav-extras-menu"><button type="button" class="nav-extras-toggle" aria-label="More options" aria-expanded="false">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -158,7 +170,7 @@
       <div class="page-container site-footer-shell">
         <div class="site-footer-brand">
           <div class="site-footer-mark">
-            <img class="site-logo" src="/img/wtv8.png" alt="Logo">
+            <img class="site-logo" src="https://placehold.co/48x48" alt="Logo">
             <span class="site-footer-name">TUTZ.xyz</span>
           </div>
           <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
@@ -210,8 +222,25 @@
     // Load and display events
     async function loadEvents() {
       try {
-        const response = await fetch('/api/events');
-        const events = await response.json();
+        let events = [];
+        try {
+          const response = await fetch('/api/events');
+          if (response.ok) {
+            events = await response.json();
+          }
+        } catch (e) {
+          console.warn('API fetch failed, using pseudo events.');
+        }
+
+        if (events.length === 0) {
+           const now = Date.now();
+           events.push(
+             { id: 'ev-1', title: 'Minecraft Server Launch', description: 'Join us for the grand opening!', timestamp: new Date(now + 86400000).toISOString(), thumbnail: 'https://placehold.co/400x400' },
+             { id: 'ev-2', title: 'Community Q&A', description: 'Ask us anything on Discord.', timestamp: new Date(now + 86400000 * 2).toISOString(), thumbnail: 'https://placehold.co/400x400' },
+             { id: 'ev-3', title: 'Beta Testing Phase 2', description: 'Testing new features.', timestamp: new Date(now + 86400000 * 5).toISOString(), thumbnail: 'https://placehold.co/400x400', requiresApplication: true },
+             { id: 'ev-4', title: 'Past Event Example', description: 'This event already happened.', timestamp: new Date(now - 86400000 * 3).toISOString(), thumbnail: 'https://placehold.co/400x400' }
+           );
+        }
         const eventsList = document.getElementById('events-list');
         const timezoneSelect = document.getElementById('timezone-select');
         const expiredCheckbox = document.getElementById('filter-expired');
@@ -453,7 +482,7 @@
           const eventDate = new Date(event.timestamp);
           const isExpired = eventDate < now;
           const interestedPeople = event.interestedPeople || [];
-          const thumbnail = event.thumbnail || event.image || 'assets/example_plugin-icon.png';
+          const thumbnail = event.thumbnail || event.image || 'https://placehold.co/48x48';
           const eventTime = formatEventTime(eventDate, timezoneSelect.value);
           const timezoneLabel = timezoneSelect.value === 'auto' ? detectedTimezone : timezoneSelect.value;
           const peopleText = interestedPeople.length > 0 ? interestedPeople.slice(0, 6).join(', ') + (interestedPeople.length > 6 ? ` +${interestedPeople.length - 6}` : '') : 'No one has RSVPed yet.';
@@ -671,7 +700,7 @@
 
             return `
               <div class="event-card" data-status="${status}">
-                <img src="${event.thumbnail || event.image || 'assets/example_plugin-icon.png'}" alt="${event.title}" class="event-thumb" />
+                <img src="${event.thumbnail || event.image || 'https://placehold.co/48x48'}" alt="${event.title}" class="event-thumb" />
                 <div class="event-body">
                   <h3>${event.title}</h3>
                   <p class="event-meta">${displayTime} (${timezoneLabel}) • Hosted by ${creator} • ${event.interested || 0} interested</p>
