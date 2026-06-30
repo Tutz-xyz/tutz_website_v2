@@ -353,10 +353,10 @@ function initImageScroller() {
   if (!scroller) return;
 
   const images = [
-    { src: '/img/tools.png', alt: 'Tools' },
-    { src: '/img/trickets.png', alt: 'Trickets' },
-    { src: '/img/undergrounded_logo.png', alt: 'Undergrounded' },
-    { src: '/img/wtv8.png', alt: 'TUTZ' }
+    { src: 'https://placehold.co/400x400', alt: 'Tools' },
+    { src: 'https://placehold.co/400x400', alt: 'Trickets' },
+    { src: 'https://placehold.co/400x400', alt: 'Undergrounded' },
+    { src: 'https://placehold.co/48x48', alt: 'TUTZ' }
   ];
 
   const track = document.createElement('div');

@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TUTZ - Extras</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/x-icon" href="img/want.png">
+  <link rel="icon" type="image/x-icon" href="https://placehold.co/32x32">
 </head>
 <body class="light-mode no-hscroll">
   <div id="app">
     <nav class="nav"><button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
         <div class="navbar-left">
-          <a class="nav-brand" href="index.html"><img class="site-logo" src="/img/wtv8.png" alt="Logo"></a>
+          <a class="nav-brand" href="index.html"><img class="site-logo" src="https://placehold.co/48x48" alt="Logo"></a>
         </div>
           <div class="navbar-center">
             <div class="search-bar nav-search" style="width: 100%; gap: 8px; padding: 8px;">
                   <input id="nav-search" type="text" placeholder="Search..." aria-label="Search">
                   <button id="nav-search-btn" aria-label="Search">
-                    <img width="18" height="18" src="/assets/search.svg" alt="Search" aria-hidden="true"></img>
+                    <img width="18" height="18" src="https://placehold.co/18x18" alt="Search" aria-hidden="true"></img>
                   </button>
             <div id="nav-search-dropdown" class="search-dropdown hidden">
         <div class="search-dropdown-content">
@@ -43,10 +43,10 @@
 
             <div class="auth-buttons">
               <a href="/auth/discord" class="nav-link" id="login-btn" title="Login with Discord" style="display: flex;">
-                <img width="18" height="18" src="/assets/discord.svg" alt="Discord" aria-hidden="true"></img>
+                <img width="18" height="18" src="https://placehold.co/18x18" alt="Discord" aria-hidden="true"></img>
               </a>
               <a href="/logout" class="nav-link" id="logout-btn" style="display:none;" title="Logout">
-                <img width="18" height="18" src="/assets/logout.svg" alt="Logout" aria-hidden="true"></img>
+                <img width="18" height="18" src="https://placehold.co/18x18" alt="Logout" aria-hidden="true"></img>
               </a>
               <a href="/profile" class="nav-link" id="profile-btn" style="padding: 1px; display: none; margin-right: 31.33px;" title="Profile">
                 <img id="nav-profile-avatar" src="" alt="Profile" style="width: 32px;height: 32px;border-radius: 50%;">
@@ -158,7 +158,7 @@
       <div class="page-container site-footer-shell">
         <div class="site-footer-brand">
           <div class="site-footer-mark">
-            <img class="site-logo" src="/img/wtv8.png" alt="Logo">
+            <img class="site-logo" src="https://placehold.co/48x48" alt="Logo">
             <span class="site-footer-name">TUTZ.xyz</span>
           </div>
           <div class="footer-secondary-text">© 2026 TUTZ.xyz All rights reserved.</div>
@@ -453,7 +453,7 @@
           const eventDate = new Date(event.timestamp);
           const isExpired = eventDate < now;
           const interestedPeople = event.interestedPeople || [];
-          const thumbnail = event.thumbnail || event.image || 'assets/example_plugin-icon.png';
+          const thumbnail = event.thumbnail || event.image || 'https://placehold.co/48x48';
           const eventTime = formatEventTime(eventDate, timezoneSelect.value);
           const timezoneLabel = timezoneSelect.value === 'auto' ? detectedTimezone : timezoneSelect.value;
           const peopleText = interestedPeople.length > 0 ? interestedPeople.slice(0, 6).join(', ') + (interestedPeople.length > 6 ? ` +${interestedPeople.length - 6}` : '') : 'No one has RSVPed yet.';
@@ -671,7 +671,7 @@
 
             return `
               <div class="event-card" data-status="${status}">
-                <img src="${event.thumbnail || event.image || 'assets/example_plugin-icon.png'}" alt="${event.title}" class="event-thumb" />
+                <img src="${event.thumbnail || event.image || 'https://placehold.co/48x48'}" alt="${event.title}" class="event-thumb" />
                 <div class="event-body">
                   <h3>${event.title}</h3>
                   <p class="event-meta">${displayTime} (${timezoneLabel}) • Hosted by ${creator} • ${event.interested || 0} interested</p>
